@@ -56,8 +56,7 @@ Promise.all([
     .append('path')
     .attr('d', 'M2,2 L10,6 L2, 10 L6,6 L2,2')
     .style('fill', '#444')
-  // mouse entered version
-  // 引用線用
+  // arrow-head 引用線用
   d3.select('defs')
     .append('marker')
     .attr('id', 'arrow-mouse-entered-citation')
@@ -69,7 +68,7 @@ Promise.all([
     .append('path')
     .attr('d', 'M2,2 L10,6 L2, 10 L6,6 L2,2')
     .style('fill', '#ff66cc')
-  // 被引用線用
+  // arrow-head 被引用線用
   d3.select('defs')
     .append('marker')
     .attr('id', 'arrow-mouse-entered-citedby')
@@ -82,7 +81,7 @@ Promise.all([
     .attr('d', 'M2,2 L10,6 L2, 10 L6,6 L2,2')
     .style('fill', '#ffcc00')
 
-  // link
+  // link SVG
   var link = svg.selectAll('.link')
     .data(links)
     .enter()
@@ -94,7 +93,7 @@ Promise.all([
     .attr('fill', 'none')
     .attr('marker-end', 'url(#arrow)')
   
-  // node
+  // node SVG
   var node = svg.selectAll('.node')
     .data(nodes)
     .enter()
@@ -106,7 +105,6 @@ Promise.all([
       .on('end', dragended)
       )
     .on('click', nodeClick)
-    // .on('mouseleave', mouseleaved)
     
   node.append('circle')
     .attr('r','10')
@@ -138,7 +136,7 @@ Promise.all([
     return linkedByIndex[b.index + `,` + a.index]
   }
   
-  // drag
+  // イベント関数
   function dragstarted(event, d) {
     if (!event.active) simulation.alphaTarget(0.3).restart();
     d.fx = d.x;
@@ -156,7 +154,6 @@ Promise.all([
     d.fy = null;
   }
 
-  // mouse
   function nodeClick(event, d) {
     // 選択中ノードならリセット
     if (this.id === 'selected-node') {
@@ -215,6 +212,7 @@ Promise.all([
     .attr('stroke-width', 4)
     .attr('stroke', '#FFF')
     
+    // 選択中ノードにid付与
     d3.select(this).style('opacity', 1)
       .attr('id', 'selected-node')
   }

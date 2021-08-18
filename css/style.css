@@ -1,0 +1,13 @@
+body {
+	background-color: #222;
+}
+
+#desktop-app {
+	width:100vw;
+	height: 100vh;
+}
+
+#vis {
+	max-width: fit-content;
+	margin: 0 auto;
+}

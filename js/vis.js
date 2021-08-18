@@ -26,7 +26,7 @@ Promise.all([
     .force('center', d3.forceCenter(width / 2, height / 2))
     .on('tick', ticked)
 
-  // シミュレーションのステップごとに実行する
+  // シミュレーションのステップごとに実行する処理
   function ticked() {
     link.attr("d", function(d) {
       var dx = d.target.x - d.source.x,
@@ -104,13 +104,13 @@ Promise.all([
       .on('start', dragstarted)
       .on('drag', dragged)
       .on('end', dragended)
-    )
-    .on('mouseenter', mouseentered)
-    .on('mouseleave', mouseleaved)
-
-    node.append('circle')
-      .attr('r','10')
-      .attr('fill', '#666')
+      )
+    .on('click', nodeClick)
+    // .on('mouseleave', mouseleaved)
+    
+  node.append('circle')
+    .attr('r','10')
+    .attr('fill', '#666')
   
   node.append('text')
     .attr('dx', -30)
@@ -157,10 +157,22 @@ Promise.all([
   }
 
   // mouse
-  function mouseentered(event, d) {
-    // eventはMouseEvent, dはmouseがenterしたnode object {node_id:"23", ... }, thisはDOM要素<g class="node">, lはlink object
+  function nodeClick(event, d) {
+    // 選択中ノードならリセット
+    if (this.id === 'selected-node') {
+      link.style('stroke', '#444').attr('marker-end', 'url(#arrow)')
+      node.style('opacity', 1).select('circle').attr('stroke', 'none').attr('stroke-width', 0)
+      d3.select(this).attr('id', null)
+      d3.select(this).select('circle').attr('fill', '#666').attr('stroke-width', 0)
+      return
+    }
+
+    // 選択ノード変更前のリセット処理
+    d3.select('#selected-node').attr('id', null)
+    node.select('circle')
+      .attr('fill', '#666')
     
-    
+    // 関連リンクをハイライト
     link.style('stroke', function(l) {
       if (d === l.source)
         // 引用関係
@@ -170,7 +182,7 @@ Promise.all([
         return '#ffcc00'
       else
         return '#444'
-      })
+    })
     
     link.attr('marker-end', function(l) {
       if (d === l.source)
@@ -181,21 +193,7 @@ Promise.all([
         return 'url(#arrow)'
     })
 
-    // node.select('circle')
-    //   .attr('stroke', function(n) {
-    //     if (neighboringCitation(d, n))
-    //       return '#ff66cc'
-    //     else if (neighboringCitedBy(d, n))
-    //       return '#ffcc00'
-    //     else
-    //       return 'none'
-    //   })
-    //   .attr('stroke-width', function(n) {
-    //     if (neighboring(d, n))
-    //       return 4
-    //     else
-    //       return 0
-    //   })
+    // 隣接ノードをハイライト
     node.select('circle')
       .attr('stroke', function(n) {
         if (neighboring(d, n)) {
@@ -218,21 +216,8 @@ Promise.all([
     .attr('stroke', '#FFF')
     
     d3.select(this).style('opacity', 1)
+      .attr('id', 'selected-node')
   }
-
-  function mouseleaved(d, i) {
-    link.style('stroke', '#444').attr('marker-end', 'url(#arrow)')
-    d3.select(this).select('circle')
-      .attr('fill', '#666')
-      .attr('stroke-width', 0)
-    node.select('circle').attr('stroke', 'none').attr('stroke-width', 0)
-    node.style('opacity', 1)
-  }
-
 }).catch(function(error) {
   console.log(error)
 })
-
-
-  
-

@@ -19,4 +19,5 @@ body {
 	color: #222;
   background: rgba(255, 255, 255, 0.81);
   pointer-events: none;
+	white-space: nowrap;
 }

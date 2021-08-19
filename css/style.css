@@ -11,3 +11,12 @@ body {
 	max-width: fit-content;
 	margin: 0 auto;
 }
+
+.tooltip {
+	position: absolute;
+  padding: 2px;
+  font: 14px sans-serif;
+	color: #222;
+  background: rgba(255, 255, 255, 0.81);
+  pointer-events: none;
+}

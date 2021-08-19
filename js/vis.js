@@ -28,15 +28,15 @@ Promise.all([
 
   // シミュレーションのステップごとに実行する処理
   function ticked() {
-    link.attr("d", function(d) {
+    link.attr('d', function(d) {
       var dx = d.target.x - d.source.x,
           dy = d.target.y - d.source.y,
           dr = Math.sqrt(dx * dx + dy * dy);
-      return "M" + 
-          d.source.x + "," + 
-          d.source.y + "A" + 
-          dr + "," + dr + " 0 0,1 " + 
-          d.target.x + "," + 
+      return 'M' + 
+          d.source.x + ',' + 
+          d.source.y + 'A' + 
+          dr + ',' + dr + ' 0 0,1 ' + 
+          d.target.x + ',' + 
           d.target.y;
     })
 
@@ -106,9 +106,11 @@ Promise.all([
       )
     .on('click', nodeClick)
     
-  node.append('circle')
+    node.append('circle')
     .attr('r','10')
     .attr('fill', '#666')
+    .on('mouseover', mouseover)
+    .on('mouseout', mouseout)
   
   node.append('text')
     .attr('dx', -30)
@@ -136,6 +138,11 @@ Promise.all([
     return linkedByIndex[b.index + `,` + a.index]
   }
   
+  // define tooltip
+  var tip = d3.select('body').append('div')
+    .attr('class', 'tooltip')
+    .style('opacity', 0)
+
   // イベント関数
   function dragstarted(event, d) {
     if (!event.active) simulation.alphaTarget(0.3).restart();
@@ -204,7 +211,7 @@ Promise.all([
       })
 
     node.style('opacity', function(n) {
-      return neighboring(d, n) ? 1 : 0.2
+      return neighboring(d, n) ? 1 : 0.4
     })
 
     d3.select(this).select('circle')
@@ -215,6 +222,17 @@ Promise.all([
     // 選択中ノードにid付与
     d3.select(this).style('opacity', 1)
       .attr('id', 'selected-node')
+  }
+
+  function mouseover(event, d) {
+    tip.style('opacity', 1)
+      .html(d.title)
+      .style("left", (event.pageX + 6) + "px")
+      .style("top", (event.pageY + 6) + "px")
+  }
+
+  function mouseout(event, d) {
+    tip.style('opacity', 0)
   }
 }).catch(function(error) {
   console.log(error)

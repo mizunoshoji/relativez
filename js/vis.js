@@ -1,49 +1,78 @@
 // ネットワークグラフ練習
-var width, height, simulation, svg
+var width, height, simulation, svg, zoom
 
-width = 960
+width = 950
 height = 800
 
+// グラフ以外のHTMLをどう作成するか？
+// list column
+d3.select('#desktop-app')
+.append('div')
+.attr('class', 'list-column')
+.append('div').attr('id', 'logo').html('relativez')
+
+d3.select('.list-column')
+.append('ul')
+.style('padding', '0')
+.selectAll('li')
+.data(['list item', 'list item', 'list item', 'list item', 'list item', 'list item', 'list item', 'list item'])
+.enter()
+.append('li')
+.text(function(d) { return d })
+.style('list-style', 'none')
+.style('border', 'solid 1px #444')
+.style('color', '#FFF')
+.style('padding', '20px')
+
+// vis column
 svg = d3.select('#desktop-app')
   .append('div')
   .attr('id', 'vis')
   .append('svg')
-  .attr('width', width)
+  .attr('width', '75vw')
   .attr('height', '100vh')
+  .append('g')
 
 // データソース読み込み
 Promise.all([
   d3.csv('data/relativez_データソース - 文献表_開発用.csv'),
   d3.csv('data/relativez_データソース - 引用関係表_開発用.csv')
 ]).then(function(data) {
-  nodes = data[0]
-  links = data[1]
-
-  // 物理シミュレーションのセッティング
-  var simulation = d3.forceSimulation(nodes)
+    nodes = data[0]
+    links = data[1]
+    
+    // 物理シミュレーションのセッティング
+    var simulation = d3.forceSimulation(nodes)
     .force('link', d3.forceLink().links(links).id(function(n) { return n.node_id }).distance(200))
     .force('charge', d3.forceManyBody().strength(-300))
     .force('center', d3.forceCenter(width / 2, height / 2))
     .on('tick', ticked)
-
-  // シミュレーションのステップごとに実行する処理
-  function ticked() {
-    link.attr('d', function(d) {
-      var dx = d.target.x - d.source.x,
-          dy = d.target.y - d.source.y,
-          dr = Math.sqrt(dx * dx + dy * dy);
-      return 'M' + 
-          d.source.x + ',' + 
-          d.source.y + 'A' + 
-          dr + ',' + dr + ' 0 0,1 ' + 
-          d.target.x + ',' + 
-          d.target.y;
-    })
-
-    node
+    
+    // シミュレーションのステップごとに実行する処理
+    function ticked() {
+      link.attr('d', function(d) {
+        var dx = d.target.x - d.source.x,
+        dy = d.target.y - d.source.y,
+        dr = Math.sqrt(dx * dx + dy * dy);
+        return 'M' + 
+        d.source.x + ',' + 
+        d.source.y + 'A' + 
+        dr + ',' + dr + ' 0 0,1 ' + 
+        d.target.x + ',' + 
+        d.target.y;
+      })
+      
+      node
       .attr('transform', function(d) { return 'translate(' + d.x + ',' + d.y + ')' })
-  }
+    }
   
+  // zoom & pan
+  zoom = d3.zoom()
+  .scaleExtent([0.5, 3])
+  .on('zoom', handleZoom)
+
+  initZoom()
+
   // arrow-head
   svg.append('defs')
     .append('marker')
@@ -118,6 +147,11 @@ Promise.all([
     .attr('font-size', 12)
     .attr('fill', '#CCC')
     .text(function(d) { return d.author + '(' + d.year + ')'})
+
+    // define tooltip
+    var tip = d3.select('body').append('div')
+      .attr('class', 'tooltip')
+      .style('opacity', 0)
   
   // 隣接ノードか調べるためのmap
   var linkedByIndex = {}
@@ -138,17 +172,13 @@ Promise.all([
     return linkedByIndex[b.index + `,` + a.index]
   }
   
-  // define tooltip
-  var tip = d3.select('body').append('div')
-    .attr('class', 'tooltip')
-    .style('opacity', 0)
 
   // イベント関数
   function dragstarted(event, d) {
     if (!event.active) simulation.alphaTarget(0.3).restart();
     d.fx = d.x
     d.fy = d.y
-
+    // スマホでtooltipが残らないように
     tip.style('opacity', 0)
   }
   
@@ -236,6 +266,17 @@ Promise.all([
   function mouseout(event, d) {
     tip.style('opacity', 0)
   }
+
+  function initZoom() {
+    d3.select('svg')
+      .call(zoom)
+  }
+
+  function handleZoom(e) {
+    d3.select('svg g')
+      .attr('transform', e.transform)
+  }
+
 }).catch(function(error) {
   console.log(error)
 })

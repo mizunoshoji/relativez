@@ -1,3 +1,7 @@
+* {
+	box-sizing: border-box;
+}
+
 body {
 	background-color: #222;
 }
@@ -7,9 +11,24 @@ body {
 	height: 100vh;
 }
 
+/* 仮 */
+#logo {
+	width: 230px;
+	height: 40px;
+	color: #FFF;
+	font-size: 24px;
+	margin: 20px;
+}
+
 #vis {
-	max-width: fit-content;
-	margin: 0 auto;
+	float: right;
+}
+
+.list-column {
+	float: left;
+	max-width: 25vw;
+	min-width: 25vw;
+	height: 100vh;
 }
 
 .tooltip {

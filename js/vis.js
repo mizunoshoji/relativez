@@ -96,7 +96,7 @@ Promise.all([
     .attr('orient', 'auto')
     .append('path')
     .attr('d', 'M2,2 L10,6 L2, 10 L6,6 L2,2')
-    .style('fill', '#ff66cc')
+    .style('fill', '#823070')
   // arrow-head 被引用線用
   d3.select('defs')
     .append('marker')
@@ -108,7 +108,7 @@ Promise.all([
     .attr('orient', 'auto')
     .append('path')
     .attr('d', 'M2,2 L10,6 L2, 10 L6,6 L2,2')
-    .style('fill', '#ffcc00')
+    .style('fill', '#827730')
 
   // link SVG
   var link = svg.selectAll('.link')
@@ -212,10 +212,10 @@ Promise.all([
     link.style('stroke', function(l) {
       if (d === l.source)
         // 引用関係
-        return '#ff66cc'
+        return '#823070'
       else if (d === l.target)
         // 被引用関係
-        return '#ffcc00'
+        return '#827730'
       else
         return '#444'
     })

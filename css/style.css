@@ -15,9 +15,10 @@ body {
 #logo {
 	width: 230px;
 	height: 40px;
-	color: #FFF;
+	color: #837730;
 	font-size: 24px;
 	margin: 20px;
+	font-weight: bold;
 }
 
 #vis {

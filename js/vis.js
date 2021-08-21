@@ -9,7 +9,7 @@ height = 800
 d3.select('#desktop-app')
 .append('div')
 .attr('class', 'list-column')
-.append('div').attr('id', 'logo').html('relativez')
+.append('div').attr('id', 'logo').html('<img src="assets/typo.png">')
 
 d3.select('.list-column')
 .append('ul')
@@ -96,7 +96,7 @@ Promise.all([
     .attr('orient', 'auto')
     .append('path')
     .attr('d', 'M2,2 L10,6 L2, 10 L6,6 L2,2')
-    .style('fill', '#823070')
+    .style('fill', '#c44caa')
   // arrow-head 被引用線用
   d3.select('defs')
     .append('marker')
@@ -108,7 +108,7 @@ Promise.all([
     .attr('orient', 'auto')
     .append('path')
     .attr('d', 'M2,2 L10,6 L2, 10 L6,6 L2,2')
-    .style('fill', '#827730')
+    .style('fill', '#bfa925')
 
   // link SVG
   var link = svg.selectAll('.link')
@@ -145,7 +145,7 @@ Promise.all([
     .attr('dx', -30)
     .attr('dy', -16)
     .attr('font-size', 12)
-    .attr('fill', '#CCC')
+    .attr('fill', '#cacaca')
     .text(function(d) { return d.author + '(' + d.year + ')'})
 
     // define tooltip
@@ -212,10 +212,10 @@ Promise.all([
     link.style('stroke', function(l) {
       if (d === l.source)
         // 引用関係
-        return '#823070'
+        return '#c44caa'
       else if (d === l.target)
         // 被引用関係
-        return '#827730'
+        return '#bfa925'
       else
         return '#444'
     })
@@ -233,7 +233,7 @@ Promise.all([
     node.select('circle')
       .attr('stroke', function(n) {
         if (neighboring(d, n)) {
-          return '#FFF'
+          return '#cacaca'
         }
       })
       .attr('stroke-width', function(n) {
@@ -249,7 +249,7 @@ Promise.all([
     d3.select(this).select('circle')
     .attr('fill', '#222')
     .attr('stroke-width', 4)
-    .attr('stroke', '#FFF')
+    .attr('stroke', '#cacaca')
     
     // 選択中ノードにid付与
     d3.select(this).style('opacity', 1)

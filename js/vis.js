@@ -9,7 +9,7 @@ height = 800
 d3.select('#desktop-app')
 .append('div')
 .attr('class', 'list-column')
-.append('div').attr('id', 'logo').html('<img src="assets/typo.png">')
+.append('div').attr('id', 'logo').html('<img src="assets/logo.svg">')
 
 d3.select('.list-column')
 .append('ul')

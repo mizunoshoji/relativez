@@ -197,3 +197,5 @@ nodeのkeyの値とlinkのsourceとnodeの値を対応させなければなら�
 .force('link', d3.forceLink().links(links).id(function(n) { return n.node_id }))
 ```
 nodeオブジェクトのnode_idをつかってlinkをつくるように変更したらできた。数字にしているし、indexのつもりでいたが、indexは0ベースのカウントになっていて、自分で設定しているnode_idと別ものになっている。indexの値をsourceとtargetの値に設定していくのは直観的に分かりにくい。indexで紐付けないほうがいい。ログのエラーから明確に問題の行を特定、実行された関数スタックを追う、どの関数で、どのエラーが返されているか、これをすぐできないと。気づくに時間かかりすぎ。エラーを特定して、ググればヒントは出てくる。
+
+check CORS error 

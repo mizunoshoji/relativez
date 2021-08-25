@@ -11,8 +11,8 @@ svg = d3.select('#vis')
 
 // データソース読み込み
 Promise.all([
-  d3.csv('data/Relativez_データ作成.v01 - 文献表(仮).csv'),
-  d3.csv('data/Relativez_データ作成.v01 - 引用関係表(仮).csv')
+  d3.csv('data/relativez_データ作成.v01 - 文献表(仮).csv'),
+  d3.csv('data/relativez_データ作成.v01 - 引用関係表(仮).csv')
 ]).then(function(data) {
     nodes = data[0]
     links = data[1]

@@ -4,48 +4,26 @@ var width, height, simulation, svg, zoom
 width = 950
 height = 800
 
-// グラフ以外のHTMLをどう作成するか？
-// list column
-d3.select('#desktop-app')
-.append('div')
-.attr('class', 'list-column')
-.append('div').attr('id', 'logo').html('<img src="assets/logo.svg">')
-
-d3.select('.list-column')
-.append('ul')
-.style('padding', '0')
-.selectAll('li')
-.data(['list item', 'list item', 'list item', 'list item', 'list item', 'list item', 'list item', 'list item'])
-.enter()
-.append('li')
-.text(function(d) { return d })
-.style('list-style', 'none')
-.style('border', 'solid 1px #444')
-.style('color', '#FFF')
-.style('padding', '20px')
-
-// vis column
-svg = d3.select('#desktop-app')
-  .append('div')
-  .attr('id', 'vis')
+// SVG graph
+svg = d3.select('#vis')
   .append('svg')
-  .attr('width', '75vw')
-  .attr('height', '100vh')
   .append('g')
 
 // データソース読み込み
 Promise.all([
-  d3.csv('data/relativez_データソース - 文献表_開発用.csv'),
-  d3.csv('data/relativez_データソース - 引用関係表_開発用.csv')
+  d3.csv('data/Relativez_データ作成.v01 - 文献表(仮).csv'),
+  d3.csv('data/Relativez_データ作成.v01 - 引用関係表(仮).csv')
 ]).then(function(data) {
     nodes = data[0]
     links = data[1]
     
     // 物理シミュレーションのセッティング
     var simulation = d3.forceSimulation(nodes)
-    .force('link', d3.forceLink().links(links).id(function(n) { return n.node_id }).distance(200))
-    .force('charge', d3.forceManyBody().strength(-300))
+    .force('link', d3.forceLink().links(links).id(function(n) { return n.node_id }).distance(100))
+    .force('charge', d3.forceManyBody().strength(-20))
     .force('center', d3.forceCenter(width / 2, height / 2))
+    .velocityDecay(0.4)
+    .alphaMin(0.1)
     .on('tick', ticked)
     
     // シミュレーションのステップごとに実行する処理
@@ -53,13 +31,13 @@ Promise.all([
       link.attr('d', function(d) {
         var dx = d.target.x - d.source.x,
         dy = d.target.y - d.source.y,
-        dr = Math.sqrt(dx * dx + dy * dy);
+        dr = Math.sqrt(dx * dx + dy * dy)
         return 'M' + 
         d.source.x + ',' + 
         d.source.y + 'A' + 
         dr + ',' + dr + ' 0 0,1 ' + 
         d.target.x + ',' + 
-        d.target.y;
+        d.target.y
       })
       
       node
@@ -68,7 +46,7 @@ Promise.all([
   
   // zoom & pan
   zoom = d3.zoom()
-  .scaleExtent([0.5, 3])
+  .scaleExtent([0.2, 2])
   .on('zoom', handleZoom)
 
   initZoom()
@@ -145,7 +123,7 @@ Promise.all([
     .attr('dx', -30)
     .attr('dy', -16)
     .attr('font-size', 12)
-    .attr('fill', '#cacaca')
+    .attr('fill', '#eaeaea')
     .text(function(d) { return d.author + '(' + d.year + ')'})
 
     // define tooltip
@@ -175,7 +153,7 @@ Promise.all([
 
   // イベント関数
   function dragstarted(event, d) {
-    if (!event.active) simulation.alphaTarget(0.3).restart();
+    if (!event.active) simulation.alphaTarget(0.3).velocityDecay(1).restart()
     d.fx = d.x
     d.fy = d.y
     // スマホでtooltipが残らないように
@@ -188,7 +166,7 @@ Promise.all([
   }
   
   function dragended(event, d) {
-    if (!event.active) simulation.alphaTarget(0);
+    if (!event.active) simulation.alphaTarget(0)
     d.fx = null
     d.fy = null
   }
@@ -200,6 +178,8 @@ Promise.all([
       node.style('opacity', 1).select('circle').attr('stroke', 'none').attr('stroke-width', 0)
       d3.select(this).attr('id', null)
       d3.select(this).select('circle').attr('fill', '#666').attr('stroke-width', 0)
+
+      d3.select('.list-current-item li').html('')
       return
     }
 
@@ -233,7 +213,7 @@ Promise.all([
     node.select('circle')
       .attr('stroke', function(n) {
         if (neighboring(d, n)) {
-          return '#cacaca'
+          return '#eaeaea'
         }
       })
       .attr('stroke-width', function(n) {
@@ -246,21 +226,25 @@ Promise.all([
       return neighboring(d, n) ? 1 : 0.4
     })
 
+    // 選択中ノードをハイライト
     d3.select(this).select('circle')
-    .attr('fill', '#222')
+    .attr('fill', '#4169e1')
     .attr('stroke-width', 4)
-    .attr('stroke', '#cacaca')
+    .attr('stroke', '#eaeaea')
     
     // 選択中ノードにid付与
     d3.select(this).style('opacity', 1)
       .attr('id', 'selected-node')
+
+    // 現在の文献データを表示  
+    showCurrentText(d)
   }
 
   function mouseover(event, d) {
     tip.style('opacity', 1)
       .html(d.title)
-      .style("left", (event.pageX + 6) + "px")
-      .style("top", (event.pageY + 6) + "px")
+      .style('left', (event.pageX + 6) + 'px')
+      .style('top', (event.pageY + 6) + 'px')
   }
 
   function mouseout(event, d) {
@@ -275,6 +259,21 @@ Promise.all([
   function handleZoom(e) {
     d3.select('svg g')
       .attr('transform', e.transform)
+  }
+
+  function showCurrentText(d) {
+    var currentText
+    currentText = '<div class="text-title">タイトル : ' + d.title + '</div>' 
+    currentText += '<div>著者 : ' + d.author + '</div>' 
+    currentText += '<div>発行年 : ' + d.year + '</div>' 
+    currentText += '<div>原著 : ' + d.original_work + '</div>' 
+    currentText += '<div>翻訳者 : ' + d.translator + '</div>' 
+    currentText += '<div>掲載元 : ' + d.publication_detail + '</div>' 
+    currentText += '<div>発行所 : ' + d.publisher + '</div>' 
+    currentText += '<div>その他 : ' + d.others + '</div>' 
+
+    d3.select('.list-current-item li')
+      .html(currentText)
   }
 
 }).catch(function(error) {

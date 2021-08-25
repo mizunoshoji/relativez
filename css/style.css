@@ -1,9 +1,30 @@
+/**
+ * 目次
+ *
+ * Base
+ *
+ * Layout
+ * header 
+ * vis-column
+ * list-column
+ * others
+ *
+ *
+ *
+ */
+
+/**
+ * #Base
+ */
 * {
 	box-sizing: border-box;
 }
 
 body {
 	background-color: #222;
+	font-family: Helvetica, Arial, Hiragino Kaku Gothic ProN, Hiragino Sans, Meiryo, sans-serif;
+	font-size: 14px;
+	color: #eaeaea;
 }
 
 #desktop-app {
@@ -11,22 +32,107 @@ body {
 	height: 100vh;
 }
 
-/* 仮 */
-#logo {
-	margin: 20px;
+main {
+	display: flex;
 }
 
-#vis {
+a {
+	text-decoration: none;
+}
+
+a:visited {
+	color: #eaeaea;
+}
+
+/**
+ * #Layout 
+ */
+/**
+ * #header 
+ */
+header {
+	position: fixed;
+	z-index: 999;
+	width: 100%;
+	padding: 16px 20px;
+	pointer-events: none;
+}
+
+#site-logo{
+	float: left;
+}
+
+.link-box {
 	float: right;
 }
 
-.list-column {
-	float: left;
-	max-width: 25vw;
-	min-width: 25vw;
-	height: 100vh;
+.link-box li {
+	display: inline-block;
+	font-size: 18px;
+	margin-right: 24px;
+	padding: 4px 0;
+	pointer-events: auto;
 }
 
+.link-box li:last-child {
+	margin-right: 0;
+}
+
+/**
+ * #vis-column 
+ */
+#vis svg {
+	 width: 80vw;
+	 height: 100vh;
+}
+
+/**
+ * #list-column
+ */
+.list-column {
+	max-width: 20vw;
+	min-width: 20vw;
+	height: 100vh;
+	padding-top: 82px;
+}
+
+.list-container {
+	border: solid #444 1px;
+}
+
+.list-current-item {
+	position: fixed;
+	right: 0px;
+	z-index: 999;
+	width: 300px;
+  padding: 12px;
+	background-color: #222222AA;
+	border: solid #4169e1 1px;
+	color: #AAA;
+	line-height: 1.8;
+}
+
+.list-label {
+	color: #5983ff;
+}
+
+.list-current-item > li > div:not(.text-title) {
+	padding-bottom: 6px;
+}
+
+.list-current-item > li > div:last-child {
+	padding-bottom: 0;
+}
+
+.text-title {
+	padding: 16px 0;
+	font-size: 16px;
+	color: #eaeaea;
+}
+
+/**
+ * #others 
+ */
 .tooltip {
 	position: absolute;
   padding: 2px;

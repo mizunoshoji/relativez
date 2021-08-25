@@ -103,6 +103,21 @@ d3.forceSimulation()
 https://www.d3indepth.com/force-layout/#setting-up-a-force-simulation
 
 
+`.velocityDecay(0.5)`
+摩擦係数。0~1。0に近いほど拡散する動きが出る。1に近いほど拡散しない。
+。下記コードでは1に設定。ドラッグイベント中にrestartで拡散する動きが出てしまったから1で止めている。
+
+```
+function dragstarted(event, d) {
+    if (!event.active) simulation.alphaTarget(0.3).velocityDecay(1).restart();
+    d.fx = d.x
+    d.fy = d.y
+    // スマホでtooltipが残らないように
+    tip.style('opacity', 0)
+  }
+
+```
+
 ## linkとnodeのSVG要素の作成
 
 node.call()。nodeのcall演算子。node.call(force.drag)でノードに振る舞いをバインドする。マウスやタッチでドラッグできるようになる。

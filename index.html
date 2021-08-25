@@ -4,17 +4,46 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  
-  <title>A Basic HTML5 Template</title>
-  <meta name="description" content="A simple HTML5 Template for new projects.">
-  <meta name="author" content="SitePoint">
+  <title>relativez</title>
+  <meta name="description" content="relativezは文献の引用関係を可視化するツールです。">
   <script src="js/libs/d3.min.js" charset="utf-8"></script>
   <link rel="stylesheet" href="css/reset.css">
   <link rel="stylesheet" href="css/style.css">
   <link rel="favicon" href="favicon.ico">
 </head>
 <body>
-  <div id="desktop-app"></div>
+  <noscript><strong>申し訳ございませんがrelativezはJavaScriptなしでは動作しません。JavaScriptが利用できる環境でご利用ください。</strong></noscript>
+  <div id="desktop-app">
+    <header>
+      <div id="site-logo">
+        <img src="assets/logo.svg">
+      </div>
+      <div class="link-box">
+        <ul>
+          <li><a href="http://localhost:8080">item</a></li>
+          <li>item</li>
+          <li>item</li>
+        </ul>
+      </div>
+    </header>
+    <main>
+      <div class="list-column">
+        <div class="list-container">
+          <div class="list-current-item">
+            <div class="list-label">選択中の文献</div>
+            <li></li>
+          </div>
+          <div class="list-items-scrollebox">
+            <ul class="list-items-citation"></ul>
+            <ul class="list-items-cited-by"></ul>
+          </div>
+        </div>
+      </div>
+      <div class="vis-column">
+        <div id="vis"></div>
+      </div>
+    </main>
+  </div>
   <script type="text/javascript" src="js/vis.js"></script>
 </body>
 </html>

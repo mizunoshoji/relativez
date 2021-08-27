@@ -7,6 +7,7 @@
   <title>relativez</title>
   <meta name="description" content="relativezは文献の引用関係を可視化するツールです。">
   <script src="js/libs/d3.min.js" charset="utf-8"></script>
+  <script src="js/libs/jquery.slim.min.js" charset="utf-8"></script>
   <link rel="stylesheet" href="css/reset.css">
   <link rel="stylesheet" href="css/style.css">
   <link rel="favicon" href="favicon.ico">
@@ -18,25 +19,35 @@
       <div id="site-logo">
         <img src="assets/logo.svg">
       </div>
-      <div class="link-box">
+      <div class="header-menu">
         <ul>
-          <li><a href="http://localhost:8080">item</a></li>
-          <li>item</li>
-          <li>item</li>
+          <li>
+            <input type="checkbox" id="hightlight-cited-by-link" name="hightlight-cited-by-link" checked>
+            <label for="hightlight-cited-by-link">被引用線</label>
+          </li>
+          <li>
+            <input type="checkbox" id="highlight-citation-link" name="highlight-citation-link" checked>
+            <label for="highlight-citation-link">引用線</label>
+          </li>
+          <li>menu</li>
+          <li>menu</li>
         </ul>
       </div>
     </header>
     <main>
       <div class="list-column">
-        <div class="list-container">
-          <div class="list-current-item">
-            <div class="list-label">選択中の文献</div>
-            <li></li>
-          </div>
-          <div class="list-items-scrollebox">
-            <ul class="list-items-citation"></ul>
-            <ul class="list-items-cited-by"></ul>
-          </div>
+        <ul class="list-items list-current-item">
+          <div class="list-current-label">選択中の文献</div>
+          <button class="reset-selected-node" type="button">Reset</button>
+          <li></li>
+        </ul>
+        <div class="list-items-box">
+          <ul class="tabs-list">
+            <li class="active tabs-list-cited-by" data-tab="#tab1">被引用文献</li>
+            <li class="tabs-list-citation" data-tab="#tab2">引用文献</li>
+          </ul>
+          <ul id="tab1" class="tab list-items list-items-cited-by active"></ul>
+          <ul id="tab2" class="tab list-items list-items-citation"></ul>
         </div>
       </div>
       <div class="vis-column">

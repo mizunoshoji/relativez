@@ -23,7 +23,7 @@
 body {
 	background-color: #222;
 	font-family: Helvetica, Arial, Hiragino Kaku Gothic ProN, Hiragino Sans, Meiryo, sans-serif;
-	font-size: 14px;
+	font-size: 16px;
 	color: #eaeaea;
 }
 
@@ -60,21 +60,27 @@ header {
 
 #site-logo{
 	float: left;
+	z-index: 999;
 }
 
-.link-box {
+.header-menu {
 	float: right;
 }
 
-.link-box li {
+.header-menu li {
 	display: inline-block;
-	font-size: 18px;
 	margin-right: 24px;
 	padding: 4px 0;
 	pointer-events: auto;
 }
 
-.link-box li:last-child {
+.header-menu label {
+	font-size: 14px;
+	color: #eaeaea;
+
+}
+
+.header-menu li:last-child {
 	margin-right: 0;
 }
 
@@ -82,7 +88,7 @@ header {
  * #vis-column 
  */
 #vis svg {
-	 width: 80vw;
+	 width: 100vw;
 	 height: 100vh;
 }
 
@@ -90,9 +96,11 @@ header {
  * #list-column
  */
 .list-column {
-	max-width: 20vw;
-	min-width: 20vw;
-	height: 100vh;
+	position: fixed;
+	z-index: 998;
+	left: 16px;
+	width: 300px;
+	max-height: 100vh;
 	padding-top: 82px;
 }
 
@@ -100,27 +108,31 @@ header {
 	border: solid #444 1px;
 }
 
+.list-items {
+	color: #AAA;
+	line-height: 1.8;
+	font-size: 14px;
+}
+
 .list-current-item {
 	position: fixed;
-	right: 0px;
+	right: 16px;
 	z-index: 999;
 	width: 300px;
   padding: 12px;
-	background-color: #222222AA;
+	background-color: #222222ee;
 	border: solid #4169e1 1px;
-	color: #AAA;
-	line-height: 1.8;
 }
-
-.list-label {
+/* 選択中文献データ */
+.list-current-label {
 	color: #5983ff;
 }
 
-.list-current-item > li > div:not(.text-title) {
+.list-items > li > div:not(.text-title) {
 	padding-bottom: 6px;
 }
 
-.list-current-item > li > div:last-child {
+.list-items > li > div:last-child {
 	padding-bottom: 0;
 }
 
@@ -128,6 +140,81 @@ header {
 	padding: 16px 0;
 	font-size: 16px;
 	color: #eaeaea;
+}
+
+.list-current-item button {
+	position: relative;
+	top: -24px;
+	float: right;
+	color:#eaeaea
+
+}
+
+/* 引用文献・被引用文献リスト */
+.list-items-box {
+	background-color: #222222ee;
+}
+
+.tabs-list li {
+	display: inline-block;
+	padding: 10px 10px 0px 10px;
+	font-size: 14px;
+	cursor: pointer;
+}
+
+.tabs-list-cited-by {
+	color: #bfa925;
+}
+
+.tabs-list-citation {
+	color: #c44caa;
+}
+
+.tab {
+	display: none;
+	max-height: 85vh;
+	padding: 12px;
+	overflow-y: scroll;
+}
+
+.tab::-webkit-scrollbar {
+  width: 10px;
+}
+
+.tab::-webkit-scrollbar-track {
+  background-color: #222;
+}
+
+.tab::-webkit-scrollbar-thumb {
+  background-color: #444;
+}
+
+
+/* When active state */
+.active{
+	display: block;
+}
+
+.list-items-cited-by {
+	border: solid #bfa925 1px;
+}
+
+.list-items-citation {
+	border: solid #c44caa 1px;
+}
+
+.tabs-list-cited-by.active {
+	position: relative;
+	top: 1px;
+	border: solid #bfa925 1px;
+	border-bottom: solid #222 1px;
+}
+
+.tabs-list-citation.active {
+	position: relative;
+	top: 1px;
+	border: solid #c44caa 1px;
+	border-bottom: solid #222 1px;
 }
 
 /**

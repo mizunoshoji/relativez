@@ -1,8 +1,8 @@
 // ネットワークグラフ練習
-var width, height, simulation, svg, zoom
+var clientWidth, clientHeight, svg, zoom
 
-width = 950
-height = 800
+clientWidth = document.documentElement.clientWidth
+clientHeight = document.documentElement.clientHeight
 
 // SVG graph
 svg = d3.select('#vis')
@@ -11,17 +11,18 @@ svg = d3.select('#vis')
 
 // データソース読み込み
 Promise.all([
-  d3.csv('data/relativez_データ作成.v01 - 文献表(仮).csv'),
-  d3.csv('data/relativez_データ作成.v01 - 引用関係表(仮).csv')
+  d3.csv('data/relativez_データ作成.v02 - 文献表.csv'),
+  d3.csv('data/relativez_データ作成.v02 - 引用関係表.csv')
 ]).then(function(data) {
     nodes = data[0]
     links = data[1]
     
     // 物理シミュレーションのセッティング
     var simulation = d3.forceSimulation(nodes)
-    .force('link', d3.forceLink().links(links).id(function(n) { return n.node_id }).distance(100))
-    .force('charge', d3.forceManyBody().strength(-20))
-    .force('center', d3.forceCenter(width / 2, height / 2))
+    .force('link', d3.forceLink().links(links).id(function(n) { return n.node_id }).distance(200))
+    .force('charge', d3.forceManyBody().strength(-30))
+    .force('center', d3.forceCenter(clientWidth / 2, clientHeight / 2))
+    .force('collige', d3.forceCollide().radius(30).strength(1).iterations(5))
     .velocityDecay(0.4)
     .alphaMin(0.1)
     .on('tick', ticked)
@@ -66,7 +67,7 @@ Promise.all([
   // arrow-head 引用線用
   d3.select('defs')
     .append('marker')
-    .attr('id', 'arrow-mouse-entered-citation')
+    .attr('id', 'arrow-citation')
     .attr('refX', 18)
     .attr('refY', 5.8)
     .attr('markerWidth', 28)
@@ -78,7 +79,7 @@ Promise.all([
   // arrow-head 被引用線用
   d3.select('defs')
     .append('marker')
-    .attr('id', 'arrow-mouse-entered-citedby')
+    .attr('id', 'arrow-cited-by')
     .attr('refX', 18)
     .attr('refY', 5.8)
     .attr('markerWidth', 28)
@@ -180,6 +181,8 @@ Promise.all([
       d3.select(this).select('circle').attr('fill', '#666').attr('stroke-width', 0)
 
       d3.select('.list-current-item li').html('')
+      d3.select('.list-items-cited-by').html('')
+      d3.select('.list-items-citation').html('')
       return
     }
 
@@ -188,12 +191,16 @@ Promise.all([
     node.select('circle')
       .attr('fill', '#666')
     
+
+    var propCitationCheckBox = $('#highlight-citation-link').prop('checked')
+    var propCitedByChechBox = $('#hightlight-cited-by-link').prop('checked')
+    
     // 関連リンクをハイライト
     link.style('stroke', function(l) {
-      if (d === l.source)
+      if (d === l.source && propCitationCheckBox)
         // 引用関係
         return '#c44caa'
-      else if (d === l.target)
+      else if (d === l.target && propCitedByChechBox)
         // 被引用関係
         return '#bfa925'
       else
@@ -201,12 +208,19 @@ Promise.all([
     })
     
     link.attr('marker-end', function(l) {
-      if (d === l.source)
-        return 'url(#arrow-mouse-entered-citation)'
-      else if (d === l.target)
-        return 'url(#arrow-mouse-entered-citedby)'
+      if (d === l.source && propCitationCheckBox)
+        return 'url(#arrow-citation)'
+      else if (d === l.target && propCitedByChechBox)
+        return 'url(#arrow-cited-by)'
       else
         return 'url(#arrow)'
+    })
+
+    link.attr('data-linkType', function(l) {
+      if (d === l.source)
+        return 'citation'
+      else if (d === l.target)
+        return 'cited-by'
     })
 
     // 隣接ノードをハイライト
@@ -238,6 +252,10 @@ Promise.all([
 
     // 現在の文献データを表示  
     showCurrentText(d)
+    // 引用文献リスト表示
+    showCitationText(d)
+    // 被引用文献リスト表示
+    showCitedByText(d)
   }
 
   function mouseover(event, d) {
@@ -275,6 +293,104 @@ Promise.all([
     d3.select('.list-current-item li')
       .html(currentText)
   }
+
+  function showCitationText(d) {
+    d3.select('.list-items-citation').html('')
+
+    nodes.forEach(function(n) {
+      if (neighboringCitation(d, n)) {
+        var citationText
+        citationText = '<div class="text-title">タイトル : ' + n.title + '</div>' 
+        citationText += '<div>著者 : ' + n.author + '</div>' 
+        citationText += '<div>発行年 : ' + n.year + '</div>' 
+        citationText += '<div>原著 : ' + n.original_work + '</div>' 
+        citationText += '<div>翻訳者 : ' + n.translator + '</div>' 
+        citationText += '<div>掲載元 : ' + n.publication_detail + '</div>' 
+        citationText += '<div>発行所 : ' + n.publisher + '</div>' 
+        citationText += '<div>その他 : ' + n.others + '</div>' 
+
+        d3.select('.list-items-citation').append('li').html(citationText)
+      }
+    })
+  }
+
+  function showCitedByText(d) {
+    d3.select('.list-items-cited-by').html('')
+
+    nodes.forEach(function(n) {
+      if (neighboringCitedBy(d, n)) {
+        var citedByText
+        citedByText = '<div class="text-title">タイトル : ' + n.title + '</div>' 
+        citedByText += '<div>著者 : ' + n.author + '</div>' 
+        citedByText += '<div>発行年 : ' + n.year + '</div>' 
+        citedByText += '<div>原著 : ' + n.original_work + '</div>' 
+        citedByText += '<div>翻訳者 : ' + n.translator + '</div>' 
+        citedByText += '<div>掲載元 : ' + n.publication_detail + '</div>' 
+        citedByText += '<div>発行所 : ' + n.publisher + '</div>' 
+        citedByText += '<div>その他 : ' + n.others + '</div>' 
+
+        d3.select('.list-items-cited-by').append('li').html(citedByText)
+      }
+    })
+  }
+
+  // jquery code
+  $(function() {
+    // タブリスト
+    $('.tabs a').on('click', function(){
+      $(this).preventDefault()
+    })
+
+    $('.tabs-list li').on('click', function(){
+      var tabid = $(this).attr('data-tab')
+      $('.tabs-list li, tab').removeClass('active')
+      $('.tab').hide()
+      $(tabid).show()
+      $(this).addClass('active')
+    })
+
+    // 選択解除ボタン
+    $('.reset-selected-node').on('click', function(){
+      
+        link.style('stroke', '#444').attr('marker-end', 'url(#arrow)')
+        node.style('opacity', 1).select('circle').attr('stroke', 'none').attr('stroke-width', 0)
+        d3.select('#selected-node').select('circle').attr('fill', '#666')
+        // d3.select(this).select('circle').attr('fill', '#666').attr('stroke-width', 0)
+        d3.select('.list-current-item li').html('')
+        d3.select('.list-items-cited-by').html('')
+        d3.select('.list-items-citation').html('')
+
+        return
+      
+    })
+
+    $('input[name="highlight-citation-link"]').on('change', function() {
+      var propCitationCheckBox = $('#highlight-citation-link').prop('checked')
+
+      if (propCitationCheckBox)
+        d3.selectAll('[data-linkType="citation"]')
+          .style('stroke', '#c44caa')
+          .attr('marker-end', 'url(#arrow-citation)')
+      else
+        d3.selectAll('[data-linkType="citation"]')
+          .style('stroke', '#444')
+          .attr('marker-end', 'url(#arrow)')
+    })
+
+    $('input[name="hightlight-cited-by-link"]').on('change', function() {
+      var propCitedByChechBox = $('#hightlight-cited-by-link').prop('checked')
+
+      if (propCitedByChechBox)
+        d3.selectAll('[data-linkType="cited-by"]')
+          .style('stroke', '#bfa925')
+          .attr('marker-end', 'url(#arrow-cited-by)')
+      else
+        d3.selectAll('[data-linkType="cited-by"]')
+          .style('stroke', '#444')
+          .attr('marker-end', 'url(#arrow)')
+    })
+  })
+  
 
 }).catch(function(error) {
   console.log(error)

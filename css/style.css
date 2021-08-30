@@ -150,11 +150,34 @@ header {
 
 }
 
-/* 引用文献・被引用文献リスト */
+/* listエリア */
 .list-items-box {
 	background-color: #222222ee;
 }
 
+/* check-box */
+.checkbox-outer {
+	margin-bottom: 8px;
+}
+
+.checkbox-outer div {
+	display: inline-block;
+	font-size: 14px;
+}
+
+.checkbox-outer div:first-child {
+	margin-right: 8px;
+}
+
+.checkbox-label-cited-by {
+	color: #bfa925;
+}
+
+.checkbox-label-citaion {
+	color: #c44caa;
+}
+
+/* 引用文献・被引用文献リスト */
 .tabs-list li {
 	display: inline-block;
 	padding: 10px 10px 0px 10px;
@@ -172,7 +195,7 @@ header {
 
 .tab {
 	display: none;
-	max-height: 85vh;
+	max-height: 80vh;
 	padding: 12px;
 	overflow-y: scroll;
 }

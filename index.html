@@ -21,14 +21,6 @@
       </div>
       <div class="header-menu">
         <ul>
-          <li>
-            <input type="checkbox" id="hightlight-cited-by-link" name="hightlight-cited-by-link" checked>
-            <label for="hightlight-cited-by-link">被引用線</label>
-          </li>
-          <li>
-            <input type="checkbox" id="highlight-citation-link" name="highlight-citation-link" checked>
-            <label for="highlight-citation-link">引用線</label>
-          </li>
           <li>menu</li>
           <li>menu</li>
         </ul>
@@ -41,10 +33,20 @@
           <button class="reset-selected-node" type="button">Reset</button>
           <li></li>
         </ul>
+        <div class="checkbox-outer">
+          <div>
+            <input type="checkbox" id="hightlight-cited-by-link" name="hightlight-cited-by-link" checked>
+            <label for="hightlight-cited-by-link" class="checkbox-label-cited-by">被引用線</label>
+          </div>
+          <div>
+            <input type="checkbox" id="highlight-citation-link" name="highlight-citation-link" checked>
+            <label for="highlight-citation-link" class="checkbox-label-citaion">引用線</label>
+          </div>
+        </div>
         <div class="list-items-box">
           <ul class="tabs-list">
-            <li class="active tabs-list-cited-by" data-tab="#tab1">被引用文献</li>
-            <li class="tabs-list-citation" data-tab="#tab2">引用文献</li>
+            <li class="active tabs-list-cited-by" data-tab="#tab1">被引用文献リスト</li>
+            <li class="tabs-list-citation" data-tab="#tab2">引用文献リスト</li>
           </ul>
           <ul id="tab1" class="tab list-items list-items-cited-by active"></ul>
           <ul id="tab2" class="tab list-items list-items-citation"></ul>

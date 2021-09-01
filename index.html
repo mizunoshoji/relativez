@@ -7,13 +7,13 @@
   <title>relativez</title>
   <meta name="description" content="relativezは文献の引用関係を可視化するツールです。">
   <script src="js/libs/d3.min.js" charset="utf-8"></script>
-  <script src="js/libs/jquery.slim.min.js" charset="utf-8"></script>
+  <script src="js/libs/jquery.min.js" charset="utf-8"></script>
   <link rel="stylesheet" href="css/reset.css">
   <link rel="stylesheet" href="css/style.css">
   <link rel="favicon" href="favicon.ico">
 </head>
 <body>
-  <noscript><strong>申し訳ございませんがrelativezはJavaScriptなしでは動作しません。JavaScriptが利用できる環境でご利用ください。</strong></noscript>
+  <noscript><strong>JavaScriptが利用できる環境でご利用ください。</strong></noscript>
   <div id="desktop-app">
     <header>
       <div id="site-logo">
@@ -21,8 +21,12 @@
       </div>
       <div class="header-menu">
         <ul>
-          <li>menu</li>
-          <li>menu</li>
+          <li>
+            <button id="data-input-btn" class="open-modal button-component">データソース選択</button>
+          </li>
+          <li><a>About</a></li>
+          <li><a>Twitter</a></li>
+          <li><a>Github</a></li>
         </ul>
       </div>
     </header>
@@ -33,7 +37,7 @@
           <button class="reset-selected-node" type="button">Reset</button>
           <li></li>
         </ul>
-        <div class="checkbox-outer">
+        <div class="list-button-box">
           <div>
             <input type="checkbox" id="hightlight-cited-by-link" name="hightlight-cited-by-link" checked>
             <label for="hightlight-cited-by-link" class="checkbox-label-cited-by">被引用線</label>
@@ -56,6 +60,27 @@
         <div id="vis"></div>
       </div>
     </main>
+    <div class="filter" hidden="hidden"></div>
+    <div class="modal" hidden="hidden">
+      <div class="modal-close">
+        <button class="close-btn">Close</button>
+      </div>
+      <h1>データソースファイル選択</h1>
+      <p>入力されたデータソースファイルに基づいてネットワークグラフを作成します。文献表と引用関係表を選択してください。ファイル形式はカンマ区切り形式(.csv)にしてください。</p>
+      <div id="nodes-input" class="file-input-box">
+        <input type="file" id="nodes-input-file" class="file-selector" accept=".csv">
+        <button class="file-select-btn"><img src="/assets/Icon-attach-file.svg">文献表ファイル選択</button>
+        <p class="file-data"></p>
+        <p class="error-msg-box"></p>
+      </div>
+      <div id="links-input" class="file-input-box">
+        <input type="file" id="links-input-file" class="file-selector" accept=".csv">
+        <button class="file-select-btn"><img src="/assets/Icon-attach-file.svg">引用関係表ファイル選択</button>
+        <p class="file-data"></p>
+        <span class="error-msg-box"></span>
+      </div>
+      <button id="create-graph-btn" class="button-component">ネットワークグラフ作成</button>
+    </div>
   </div>
   <script type="text/javascript" src="js/vis.js"></script>
 </body>

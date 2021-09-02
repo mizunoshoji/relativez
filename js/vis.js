@@ -3,8 +3,69 @@ var clientWidth, clientHeight, svg, zoom;
 clientWidth = document.documentElement.clientWidth;
 clientHeight = document.documentElement.clientHeight;
 
-// SVG graph
+// SVG graph group
 svg = d3.select('#vis').append('svg').append('g');
+
+// zoom & pan
+zoom = d3.zoom().scaleExtent([0.2, 2]).on('zoom', handleZoom); 
+initZoom();
+
+function initZoom() {
+  d3.select('svg').call(zoom);
+}
+
+function handleZoom(e) {
+  d3.select('svg g').attr('transform', e.transform);
+}
+
+// arrow-head デフォルト
+svg.append('defs')
+.append('marker')
+.attr('id', 'arrow')
+.attr('refX', 17)
+.attr('refY', 5.8)
+.attr('markerWidth', 28)
+.attr('markerHeight', 28)
+.attr('orient', 'auto')
+.append('path')
+.attr('d', 'M2,2 L10,6 L2, 10 L6,6 L2,2')
+.style('fill', '#444');
+// arrow-head 引用線用
+d3.select('defs')
+.append('marker')
+.attr('id', 'arrow-citation')
+.attr('refX', 18)
+.attr('refY', 5.8)
+.attr('markerWidth', 28)
+.attr('markerHeight', 28)
+.attr('orient', 'auto')
+.append('path')
+.attr('d', 'M2,2 L10,6 L2, 10 L6,6 L2,2')
+.style('fill', '#c44caa');
+// arrow-head 被引用線用
+d3.select('defs')
+.append('marker')
+.attr('id', 'arrow-cited-by')
+.attr('refX', 18)
+.attr('refY', 5.8)
+.attr('markerWidth', 28)
+.attr('markerHeight', 28)
+.attr('orient', 'auto')
+.append('path')
+.attr('d', 'M2,2 L10,6 L2, 10 L6,6 L2,2')
+.style('fill', '#bfa925');
+
+// 初期グラフ表示
+Promise.all([
+  d3.blob('data/initial_graph_nodes.csv'),
+  d3.blob('data/initial_graph_links.csv')
+]).then(function(blob) {
+  const nodeObjUrl = URL.createObjectURL(blob[0]);
+  const linksObjUrl = URL.createObjectURL(blob[1]);
+  createGraph(nodeObjUrl, linksObjUrl);
+}).catch(function(error){
+  console.log(error);
+});
 
 /* 
  * createGraph関数
@@ -15,7 +76,6 @@ function createGraph(nodesObjUrl, linksObjUrl) {
     d3.csv(nodesObjUrl),
     d3.csv(linksObjUrl)
   ]).then(function(data) {
-
     URL.revokeObjectURL(nodesObjUrl);
     URL.revokeObjectURL(linksObjUrl);
 
@@ -48,91 +108,85 @@ function createGraph(nodesObjUrl, linksObjUrl) {
         return 'translate(' + d.x + ',' + d.y + ')';
       });
     }
-    
-    // zoom & pan
-    zoom = d3.zoom().scaleExtent([0.2, 2]).on('zoom', handleZoom);
-  
-    initZoom();
-  
-    // arrow-head
-    svg.append('defs')
-      .append('marker')
-      .attr('id', 'arrow')
-      .attr('refX', 17)
-      .attr('refY', 5.8)
-      .attr('markerWidth', 28)
-      .attr('markerHeight', 28)
-      .attr('orient', 'auto')
-      .append('path')
-      .attr('d', 'M2,2 L10,6 L2, 10 L6,6 L2,2')
-      .style('fill', '#444');
-    // arrow-head 引用線用
-    d3.select('defs')
-      .append('marker')
-      .attr('id', 'arrow-citation')
-      .attr('refX', 18)
-      .attr('refY', 5.8)
-      .attr('markerWidth', 28)
-      .attr('markerHeight', 28)
-      .attr('orient', 'auto')
-      .append('path')
-      .attr('d', 'M2,2 L10,6 L2, 10 L6,6 L2,2')
-      .style('fill', '#c44caa');
-    // arrow-head 被引用線用
-    d3.select('defs')
-      .append('marker')
-      .attr('id', 'arrow-cited-by')
-      .attr('refX', 18)
-      .attr('refY', 5.8)
-      .attr('markerWidth', 28)
-      .attr('markerHeight', 28)
-      .attr('orient', 'auto')
-      .append('path')
-      .attr('d', 'M2,2 L10,6 L2, 10 L6,6 L2,2')
-      .style('fill', '#bfa925');
-  
-    // link SVG
-    link = svg.selectAll('.link')
-      .data(links)
-      .enter()
+
+    // simulation.on('end', endSimulation);
+    // function endSimulation () {
+    //   // スケール関数
+    //   // d3.scale().liner().domain([0, 入力の最大値]).renge([0,出力の最大値]);
+    //   // xScale
+    //   // yScale
+    //   // レンダリング完了前の座標位置になってしまう？x座標の値がなんかちがう。。。完了後ならokっぽい。
+    //   // すぐレンダリング完了させる→座標得る→スケール関数で座標を書き換え→グラフを表示、ならいけそう？
+    //   var xArray = [];
+    //   nodes.forEach(function(node) {
+    //     console.log(node);
+    //     console.log(node.x);
+    //     xArray.push(node.x);
+    //   })
+    //   console.log(xArray);
+    //   graphMaxWidth = d3.max(xArray);
+    //   console.log('元のSVG座標空間のx座標最大値。シミュレーション完了後' + graphMaxWidth);
+
+    // }
+
+    // SVG link
+    link = svg.selectAll('.link').data(links);
+
+    link.exit().remove();
+
+    linkEnter = link.enter()
       .append('path')
       .attr('class', 'link')
       .attr('stroke-width', 1.5)
       .style('stroke', '#444')
       .attr('stroke-opacity', 0.7)
       .attr('fill', 'none')
-      .attr('marker-end', 'url(#arrow)');
+      .attr('marker-end', 'url(#arrow)')
+
+    link = linkEnter.merge(link);
     
-    // node SVG
-    node = svg.selectAll('.node')
-      .data(nodes)
-      .enter()
-      .append('g')
-      .attr('class', 'node')
-      .call(d3.drag()
+    // SVG node
+    node = svg.selectAll('.node').data(nodes);
+
+    // move update selection nodes to the front
+    $('.node').appendTo('#vis > svg > g');
+
+    node.exit().remove();
+
+    nodeEnter = node.enter().append('g')
+      .attr('class', 'node');
+
+    nodeEnter.append('circle')
+      .attr('r','10')
+      .attr('fill', '#666')
+      .style('z-index', '2');
+      
+    nodeEnter.append('text')
+    .attr('dx', -30)
+    .attr('dy', -16)
+    .attr('font-size', 12)
+    .attr('fill', '#eaeaea')
+    .text(function(d) { return d.author + '(' + d.year + ')'});
+
+    node = nodeEnter.merge(node);
+
+    node.select('text').text(function(d) { return d.author + '(' + d.year + ')'});
+      
+    node.select('circle')
+      .on('mouseover', mouseover)
+      .on('mouseout', mouseout);
+      
+    node.call(d3.drag()
         .on('start', dragstarted)
         .on('drag', dragged)
         .on('end', dragended)
         )
       .on('click', nodeClick);
-      
-      node.append('circle')
-        .attr('r','10')
-        .attr('fill', '#666')
-        .on('mouseover', mouseover)
-        .on('mouseout', mouseout);
-      
-    node.append('text')
-      .attr('dx', -30)
-      .attr('dy', -16)
-      .attr('font-size', 12)
-      .attr('fill', '#eaeaea')
-      .text(function(d) { return d.author + '(' + d.year + ')'});
-  
-      // define tooltip
-      var tip = d3.select('body').append('div')
-        .attr('class', 'tooltip')
-        .style('opacity', 0);
+
+    // define tooltip
+    var tip = d3.select('body').append('div')
+      .attr('class', 'tooltip')
+      .style('opacity', 0);
     
     // 隣接ノードか調べるためのmap
     var linkedByIndex = {};
@@ -140,7 +194,19 @@ function createGraph(nodesObjUrl, linksObjUrl) {
       linkedByIndex[d.source.index + ',' + d.target.index] = 1;
     })
 
+    resetGreph();
+
     $('.modal, .filter').fadeOut(200);
+
+    function resetGreph() {
+      d3.select('#selected-node').attr('id', null);
+      node.style('opacity', 1).select('circle').attr('stroke', 'none').attr('stroke-width', 0);
+      node.select('circle').attr('fill', '#666');
+      link.style('stroke', '#444').attr('marker-end', 'url(#arrow)');
+      d3.select('.list-current-item li').html('');
+      d3.select('.list-items-cited-by').html('');
+      d3.select('.list-items-citation').html('');
+    }
 
     // 2つのnodeが隣接するか
     function neighboring(a, b) {
@@ -176,16 +242,8 @@ function createGraph(nodesObjUrl, linksObjUrl) {
     }
   
     function nodeClick(event, d) {
-      // 選択中ノードならリセット
       if (this.id === 'selected-node') {
-        link.style('stroke', '#444').attr('marker-end', 'url(#arrow)');
-        node.style('opacity', 1).select('circle').attr('stroke', 'none').attr('stroke-width', 0);
-        d3.select(this).attr('id', null);
-        d3.select(this).select('circle').attr('fill', '#666').attr('stroke-width', 0);
-  
-        d3.select('.list-current-item li').html('');
-        d3.select('.list-items-cited-by').html('');
-        d3.select('.list-items-citation').html('');
+        resetGreph();
         return
       }
   
@@ -270,14 +328,6 @@ function createGraph(nodesObjUrl, linksObjUrl) {
       tip.style('opacity', 0);
     }
   
-    function initZoom() {
-      d3.select('svg').call(zoom);
-    }
-  
-    function handleZoom(e) {
-      d3.select('svg g').attr('transform', e.transform);
-    }
-  
     function showCurrentText(d) {
       var currentText;
       currentText = '<div class="text-title">タイトル : ' + d.title + '</div>';
@@ -331,6 +381,9 @@ function createGraph(nodesObjUrl, linksObjUrl) {
         }
       })
     }
+
+  // 選択解除ボタン
+  $('.reset-selected-node').on('click', resetGreph);
   
   }).catch(function(error) {
     console.log(error);
@@ -349,19 +402,6 @@ $(function() {
     $('.tab').hide();
     $(tabid).show();
     $(this).addClass('active');
-  })
-
-  // 選択解除ボタン
-  $('.reset-selected-node').on('click', function(){
-    
-      link.style('stroke', '#444').attr('marker-end', 'url(#arrow)');
-      node.style('opacity', 1).select('circle').attr('stroke', 'none').attr('stroke-width', 0);
-      d3.select('#selected-node').select('circle').attr('fill', '#666');
-      d3.select('.list-current-item li').html('');
-      d3.select('.list-items-cited-by').html('');
-      d3.select('.list-items-citation').html('');
-
-      return
   })
 
   $('input[name="highlight-citation-link"]').on('change', function() {
@@ -424,6 +464,8 @@ $(function() {
       errorMsg = fileType + 'ファイルを選択してください。';
       $('#' + inputId + ' .error-msg-box').text(errorMsg);
     } else {
+      // debag
+      console.log('ファイルMIMEタイプ : ' + file.type);
       if (file.type === 'text/csv') {
         $('#' + inputId + ' .file-data').html(function() {
           fileData = '<div>ファイル名 : ' + file.name + '</div>';

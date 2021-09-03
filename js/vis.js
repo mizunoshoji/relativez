@@ -6,18 +6,6 @@ clientHeight = document.documentElement.clientHeight;
 // SVG graph group
 svg = d3.select('#vis').append('svg').append('g');
 
-// zoom & pan
-zoom = d3.zoom().scaleExtent([0.2, 2]).on('zoom', handleZoom); 
-initZoom();
-
-function initZoom() {
-  d3.select('svg').call(zoom);
-}
-
-function handleZoom(e) {
-  d3.select('svg g').attr('transform', e.transform);
-}
-
 // arrow-head デフォルト
 svg.append('defs')
 .append('marker')
@@ -82,6 +70,33 @@ function createGraph(nodesObjUrl, linksObjUrl) {
     nodes = data[0];
     links = data[1];
 
+    // zoom & pan
+    // scale change
+    var nodeLength = nodes.length;
+    var graphScale, adjustLayout;
+    if (nodeLength <= 100) {
+      graphScale = '1';
+      adjustLayout = 0;
+    } else if (nodeLength <= 500) {
+      graphScale = '.45';
+      adjustLayout = 0.25;
+    } else {
+      graphScale = '.2';
+      adjustLayout = 0.25;
+    }
+
+    zoom = d3.zoom().scaleExtent([0.2, 2]).on('zoom', handleZoom); 
+    initZoom();
+
+    function initZoom() {
+      svg.attr('transform', 'translate(' + clientWidth * adjustLayout + ', ' + clientHeight * adjustLayout + ') scale(' + graphScale + ')');
+      d3.select('svg').call(zoom);
+    }
+
+    function handleZoom(e) {
+      d3.select('svg g').attr('transform', e.transform + 'translate(' + clientWidth * adjustLayout +', ' + clientHeight * adjustLayout + ') scale(' + graphScale + ')');
+    }
+
     var simulation = d3.forceSimulation(nodes)
       .force('link', d3.forceLink().links(links).id(function(n) { return n.node_id }).distance(200))
       .force('charge', d3.forceManyBody().strength(-30))
@@ -104,30 +119,10 @@ function createGraph(nodesObjUrl, linksObjUrl) {
           d.target.y;
       });
       
-      node.attr('transform', function(d) { 
+      node.attr('transform', function(d) {
         return 'translate(' + d.x + ',' + d.y + ')';
       });
     }
-
-    // simulation.on('end', endSimulation);
-    // function endSimulation () {
-    //   // スケール関数
-    //   // d3.scale().liner().domain([0, 入力の最大値]).renge([0,出力の最大値]);
-    //   // xScale
-    //   // yScale
-    //   // レンダリング完了前の座標位置になってしまう？x座標の値がなんかちがう。。。完了後ならokっぽい。
-    //   // すぐレンダリング完了させる→座標得る→スケール関数で座標を書き換え→グラフを表示、ならいけそう？
-    //   var xArray = [];
-    //   nodes.forEach(function(node) {
-    //     console.log(node);
-    //     console.log(node.x);
-    //     xArray.push(node.x);
-    //   })
-    //   console.log(xArray);
-    //   graphMaxWidth = d3.max(xArray);
-    //   console.log('元のSVG座標空間のx座標最大値。シミュレーション完了後' + graphMaxWidth);
-
-    // }
 
     // SVG link
     link = svg.selectAll('.link').data(links);

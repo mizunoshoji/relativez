@@ -452,24 +452,22 @@ $(function() {
   $('#create-graph-btn').on('click', onClickCreateGraph);
 
   function onChangeFileInput() {
-    const inputId = $(this).parent().attr('id');
-    const files = this.files;
-    const file = files[0];
+    let inputId = $(this).parent().attr('id');
+    let files = this.files;
+    let file = files[0];
 
     $('#' + inputId + ' .error-msg-box').empty();
     $('#' + inputId + ' .file-data').empty();
 
     if (files.length === 0) {
-      const fileType = (inputId === 'nodes-input') ? '文献表': '引用関係表';
-      errorMsg = fileType + 'ファイルを選択してください。';
+      let tableName = (inputId === 'nodes-input') ? '文献表': '引用関係表';
+      errorMsg = tableName + 'ファイルを選択してください。';
       $('#' + inputId + ' .error-msg-box').text(errorMsg);
     } else {
-      // debag
-      console.log('ファイルMIMEタイプ : ' + file.type);
-      if (file.type === 'text/csv') {
+      if (file.name.endsWith('.csv')) {
         $('#' + inputId + ' .file-data').html(function() {
-          fileData = '<div>ファイル名 : ' + file.name + '</div>';
-          fileData += '<div>ファイルサイズ : ' + returnFileSize(file.size) + '</div>';
+          fileData = '<div>ファイル名 : ' + file.name + '</div>' + 
+                     '<div>ファイルサイズ : ' + returnFileSize(file.size) + '</div>';
           return fileData
         });
       } else {

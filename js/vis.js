@@ -10,7 +10,7 @@ svg = d3.select('#vis').append('svg').append('g');
 svg.append('defs')
 .append('marker')
 .attr('id', 'arrow')
-.attr('refX', 17)
+.attr('refX', 14)
 .attr('refY', 5.8)
 .attr('markerWidth', 28)
 .attr('markerHeight', 28)
@@ -22,7 +22,7 @@ svg.append('defs')
 d3.select('defs')
 .append('marker')
 .attr('id', 'arrow-citation')
-.attr('refX', 18)
+.attr('refX', 14)
 .attr('refY', 5.8)
 .attr('markerWidth', 28)
 .attr('markerHeight', 28)
@@ -34,7 +34,7 @@ d3.select('defs')
 d3.select('defs')
 .append('marker')
 .attr('id', 'arrow-cited-by')
-.attr('refX', 18)
+.attr('refX', 14)
 .attr('refY', 5.8)
 .attr('markerWidth', 28)
 .attr('markerHeight', 28)
@@ -85,7 +85,7 @@ function createGraph(nodesObjUrl, linksObjUrl) {
       adjustLayout = 0.25;
     }
 
-    zoom = d3.zoom().scaleExtent([0.2, 2]).on('zoom', handleZoom); 
+    zoom = d3.zoom().scaleExtent([0.1, 20]).on('zoom', handleZoom); 
     initZoom();
 
     function initZoom() {
@@ -132,7 +132,7 @@ function createGraph(nodesObjUrl, linksObjUrl) {
     linkEnter = link.enter()
       .append('path')
       .attr('class', 'link')
-      .attr('stroke-width', 1.5)
+      .attr('stroke-width', 4)
       .style('stroke', '#444')
       .attr('stroke-opacity', 0.7)
       .attr('fill', 'none')
@@ -215,7 +215,27 @@ function createGraph(nodesObjUrl, linksObjUrl) {
     function neighboringCitedBy(a, b) {
       return linkedByIndex[b.index + `,` + a.index];
     }
-  
+    
+    // Brush
+    // let brush = d3.brush().on('start brush', handleBrush);
+    // var brushMode;
+
+    // function handleBrush(e) {
+    //   console.log('called handleBrush');
+    // }
+
+    // function initBrush() {
+    //     console.log('called initBrush');
+    //     d3.select('svg g').call(brush);
+    // }
+
+    // // switch brush mode
+    // $('#switch-bruch-mode').on('change', function() {
+    //   brushMode = $('#switch-bruch-mode').prop('checked');
+    //   console.log('brushMode : ' +  brushMode);
+    //   initBrush();
+    // })
+
     // イベント関数
     function dragstarted(event, d) {
       if (!event.active) simulation.alphaTarget(0.3).velocityDecay(1).restart();
@@ -525,4 +545,5 @@ $(function() {
       console.log(error);
     })
   }
+
 })

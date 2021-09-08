@@ -1,47 +1,19 @@
-var clientWidth, clientHeight, svg, zoom;
+$(function() {
+var clientWidth, clientHeight, svg, zoom, graphScale, adjustLayout,
+    keepedGraphState = '';
 
-clientWidth = document.documentElement.clientWidth;
-clientHeight = document.documentElement.clientHeight;
+var clientWidth = document.documentElement.clientWidth;
+var clientHeight = document.documentElement.clientHeight;
 
 // SVG graph group
-svg = d3.select('#vis').append('svg').append('g');
+var svg = d3.select('#vis').append('svg').append('g');
 
 // arrow-head デフォルト
-svg.append('defs')
-.append('marker')
-.attr('id', 'arrow')
-.attr('refX', 14)
-.attr('refY', 5.8)
-.attr('markerWidth', 28)
-.attr('markerHeight', 28)
-.attr('orient', 'auto')
-.append('path')
-.attr('d', 'M2,2 L10,6 L2, 10 L6,6 L2,2')
-.style('fill', '#444');
+svg.append('defs').append('marker').attr('id', 'arrow').attr('refX', 16).attr('refY', 5.8).attr('markerWidth', 28).attr('markerHeight', 28).attr('orient', 'auto').append('path').attr('d', 'M2,2 L10,6 L2, 10 L6,6 L2,2').style('fill', '#444');
 // arrow-head 引用線用
-d3.select('defs')
-.append('marker')
-.attr('id', 'arrow-citation')
-.attr('refX', 14)
-.attr('refY', 5.8)
-.attr('markerWidth', 28)
-.attr('markerHeight', 28)
-.attr('orient', 'auto')
-.append('path')
-.attr('d', 'M2,2 L10,6 L2, 10 L6,6 L2,2')
-.style('fill', '#c44caa');
+d3.select('defs').append('marker').attr('id', 'arrow-citation').attr('refX', 16).attr('refY', 5.8).attr('markerWidth', 28).attr('markerHeight', 28).attr('orient', 'auto').append('path').attr('d', 'M2,2 L10,6 L2, 10 L6,6 L2,2').style('fill', '#c44caa');
 // arrow-head 被引用線用
-d3.select('defs')
-.append('marker')
-.attr('id', 'arrow-cited-by')
-.attr('refX', 14)
-.attr('refY', 5.8)
-.attr('markerWidth', 28)
-.attr('markerHeight', 28)
-.attr('orient', 'auto')
-.append('path')
-.attr('d', 'M2,2 L10,6 L2, 10 L6,6 L2,2')
-.style('fill', '#bfa925');
+d3.select('defs').append('marker').attr('id', 'arrow-cited-by').attr('refX', 16).attr('refY', 5.8).attr('markerWidth', 28).attr('markerHeight', 28).attr('orient', 'auto').append('path').attr('d', 'M2,2 L10,6 L2, 10 L6,6 L2,2').style('fill', '#bfa925');
 
 // 初期グラフ表示
 Promise.all([
@@ -51,9 +23,30 @@ Promise.all([
   const nodeObjUrl = URL.createObjectURL(blob[0]);
   const linksObjUrl = URL.createObjectURL(blob[1]);
   createGraph(nodeObjUrl, linksObjUrl);
+  // todo: revoke ObjUrl
 }).catch(function(error){
   console.log(error);
 });
+
+// Zoom & Pan
+zoom = d3.zoom()
+  .scaleExtent([0.1, 20])
+  .on('zoom', handleZoom);
+
+function initZoom() {
+  if(keepedGraphState === '') {
+    svg.attr('transform', 'translate(' + clientWidth * adjustLayout + ', ' + clientHeight * adjustLayout + ') scale(' + graphScale + ')');
+  } else {
+    svg.attr('transform', keepedGraphState);
+  }
+
+  d3.select('svg').call(zoom);
+}
+
+function handleZoom(e) {
+    d3.select('svg g').attr('transform', e.transform);
+    d3.select('svg g').attr('transform', e.transform + 'translate(' + clientWidth * adjustLayout + ', ' + clientHeight * adjustLayout + ') scale(' + graphScale + ')');
+}
 
 /* 
  * createGraph関数
@@ -69,43 +62,31 @@ function createGraph(nodesObjUrl, linksObjUrl) {
 
     nodes = data[0];
     links = data[1];
-
-    // zoom & pan
-    // scale change
+    
     var nodeLength = nodes.length;
-    var graphScale, adjustLayout;
+
+    // scale change
     if (nodeLength <= 100) {
       graphScale = '1';
       adjustLayout = 0;
-    } else if (nodeLength <= 500) {
+    } else if (nodeLength <= 550) {
       graphScale = '.45';
       adjustLayout = 0.25;
-    } else {
-      graphScale = '.2';
-      adjustLayout = 0.25;
     }
 
-    zoom = d3.zoom().scaleExtent([0.1, 20]).on('zoom', handleZoom); 
     initZoom();
 
-    function initZoom() {
-      svg.attr('transform', 'translate(' + clientWidth * adjustLayout + ', ' + clientHeight * adjustLayout + ') scale(' + graphScale + ')');
-      d3.select('svg').call(zoom);
-    }
-
-    function handleZoom(e) {
-      d3.select('svg g').attr('transform', e.transform + 'translate(' + clientWidth * adjustLayout +', ' + clientHeight * adjustLayout + ') scale(' + graphScale + ')');
-    }
-
+    // simulation
     var simulation = d3.forceSimulation(nodes)
       .force('link', d3.forceLink().links(links).id(function(n) { return n.node_id }).distance(200))
       .force('charge', d3.forceManyBody().strength(-30))
       .force('center', d3.forceCenter(clientWidth / 2, clientHeight / 2))
       .force('collige', d3.forceCollide().radius(60).strength(1).iterations(5))
-      .velocityDecay(0.3)
-      .alphaMin(0.1)
+      .velocityDecay(0.4)
+      .alphaMin(0.2)
       .on('tick', ticked);
-      
+    
+    // tick
     function ticked() {
       link.attr('d', function(d) {
         var dx = d.target.x - d.source.x,
@@ -132,7 +113,7 @@ function createGraph(nodesObjUrl, linksObjUrl) {
     linkEnter = link.enter()
       .append('path')
       .attr('class', 'link')
-      .attr('stroke-width', 4)
+      .attr('stroke-width', 2)
       .style('stroke', '#444')
       .attr('stroke-opacity', 0.7)
       .attr('fill', 'none')
@@ -170,14 +151,15 @@ function createGraph(nodesObjUrl, linksObjUrl) {
     node.select('circle')
       .on('mouseover', mouseover)
       .on('mouseout', mouseout);
-      
+    
+    node.on('click', nodeClick);
+
     node.call(d3.drag()
         .on('start', dragstarted)
         .on('drag', dragged)
         .on('end', dragended)
-        )
-      .on('click', nodeClick);
-
+        );
+        
     // define tooltip
     var tip = d3.select('body').append('div')
       .attr('class', 'tooltip')
@@ -215,34 +197,12 @@ function createGraph(nodesObjUrl, linksObjUrl) {
     function neighboringCitedBy(a, b) {
       return linkedByIndex[b.index + `,` + a.index];
     }
-    
-    // Brush
-    // let brush = d3.brush().on('start brush', handleBrush);
-    // var brushMode;
-
-    // function handleBrush(e) {
-    //   console.log('called handleBrush');
-    // }
-
-    // function initBrush() {
-    //     console.log('called initBrush');
-    //     d3.select('svg g').call(brush);
-    // }
-
-    // // switch brush mode
-    // $('#switch-bruch-mode').on('change', function() {
-    //   brushMode = $('#switch-bruch-mode').prop('checked');
-    //   console.log('brushMode : ' +  brushMode);
-    //   initBrush();
-    // })
 
     // イベント関数
     function dragstarted(event, d) {
       if (!event.active) simulation.alphaTarget(0.3).velocityDecay(1).restart();
       d.fx = d.x;
       d.fy = d.y;
-      // スマホでtooltipが残らないように
-      tip.style('opacity', 0);
     }
     
     function dragged(event, d) {
@@ -405,7 +365,6 @@ function createGraph(nodesObjUrl, linksObjUrl) {
   })
 }
 
-$(function() {
   // タブリスト
   $('.tabs a').on('click', function(){
     $(this).preventDefault();
@@ -545,5 +504,4 @@ $(function() {
       console.log(error);
     })
   }
-
 })

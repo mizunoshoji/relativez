@@ -111,6 +111,11 @@ $(function() {
       var links = data[1];
       var nodesLength = nodes.length;
 
+      if (nodesLength > 550) {
+        alert('文献数が多すぎます。現在の文献数は'+ nodesLength + 'です。文献数は550件以下にしてください。');
+        return;
+      }
+
       nodes = addCharToYear(nodes, nodesLength);
 
       // scale change
@@ -473,21 +478,15 @@ $(function() {
       $('#' + inputId + ' .error-msg-box').empty();
       $('#' + inputId + ' .file-data').empty();
 
-      if (files.length === 0) {
-        let tableName = (inputId === 'nodes-input') ? '文献表': '引用関係表';
-        errorMsg = tableName + 'ファイルを選択してください。';
-        $('#' + inputId + ' .error-msg-box').text(errorMsg);
+      if (file.name.endsWith('.csv')) {
+        $('#' + inputId + ' .file-data').html(function() {
+          fileData = '<div>ファイル名 : ' + file.name + '</div>' + 
+                    '<div>ファイルサイズ : ' + returnFileSize(file.size) + '</div>';
+          return fileData;
+        });
       } else {
-        if (file.name.endsWith('.csv')) {
-          $('#' + inputId + ' .file-data').html(function() {
-            fileData = '<div>ファイル名 : ' + file.name + '</div>' + 
-                      '<div>ファイルサイズ : ' + returnFileSize(file.size) + '</div>';
-            return fileData
-          });
-        } else {
-          errorMsg = '入力不可能なファイル形式です。カンマ区切り形式のファイル(.csv)を選択してください。';
-          $('#' + inputId + ' .error-msg-box').text(errorMsg);
-        }
+        errorMsg = '入力不可能なファイル形式です。カンマ区切り形式のファイル(.csv)を選択してください。';
+        $('#' + inputId + ' .error-msg-box').text(errorMsg);
       }
     }
 
@@ -515,7 +514,17 @@ $(function() {
         errorMsg = '引用関係表ファイルを選択してください。';
         $('#links-input .error-msg-box').text(errorMsg);
         return;
-      }    
+      }
+
+      if (nodesFile.size >= 1048576) {
+        errorMsg = 'ファイルサイズは1MB未満にしてください。';
+        $('#nodes-input .error-msg-box').text(errorMsg);
+        return;
+      } else if (linksFile.size >= 1048576) {
+        errorMsg = 'ファイルサイズは1MB未満にしてください。';
+        $('#links-input .error-msg-box').text(errorMsg);
+        return;
+      }
       
       const nodesPromise = nodesFile.text();
       const linksPromise = linksFile.text();

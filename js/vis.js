@@ -359,58 +359,43 @@ $(function() {
       }
     
       function showCurrentText(d) {
-        var currentText;
-        currentText = '<div class="text-title">タイトル : ' + d.title + '</div>';
-        currentText += '<div>著者 : ' + d.author + '</div>';
-        currentText += '<div>発行年 : ' + d.year + '</div>';
-        currentText += '<div>原著 : ' + d.original_work + '</div>'; 
-        currentText += '<div>翻訳者 : ' + d.translator + '</div>';
-        currentText += '<div>掲載元 : ' + d.publication_detail + '</div>'; 
-        currentText += '<div>発行所 : ' + d.publisher + '</div>';
-        currentText += '<div>その他 : ' + d.others + '</div>';
-    
-        d3.select('.list-current-item li').html(currentText);
+        let textListItem = textListItemTemplete(d);
+        d3.select('.list-current-item li').html(textListItem);
       }
     
       function showCitationText(d) {
         d3.select('.list-items-citation').html('');
-    
         nodes.forEach(function(n) {
           if (neighboringCitation(d, n)) {
-            var citationText;
-            citationText = '<div class="text-title">タイトル : ' + n.title + '</div>';
-            citationText += '<div>著者 : ' + n.author + '</div>';
-            citationText += '<div>発行年 : ' + n.year + '</div>';
-            citationText += '<div>原著 : ' + n.original_work + '</div>';
-            citationText += '<div>翻訳者 : ' + n.translator + '</div>';
-            citationText += '<div>掲載元 : ' + n.publication_detail + '</div>';
-            citationText += '<div>発行所 : ' + n.publisher + '</div>';
-            citationText += '<div>その他 : ' + n.others + '</div>';
-    
-            d3.select('.list-items-citation').append('li').html(citationText);
+            let textListItem = textListItemTemplete(n);
+            d3.select('.list-items-citation').append('li').html(textListItem);
           }
         })
       }
     
       function showCitedByText(d) {
         d3.select('.list-items-cited-by').html('');
-    
         nodes.forEach(function(n) {
           if (neighboringCitedBy(d, n)) {
-            var citedByText;
-            citedByText = '<div class="text-title">タイトル : ' + n.title + '</div>';
-            citedByText += '<div>著者 : ' + n.author + '</div>';
-            citedByText += '<div>発行年 : ' + n.year + '</div>';
-            citedByText += '<div>原著 : ' + n.original_work + '</div>';
-            citedByText += '<div>翻訳者 : ' + n.translator + '</div>';
-            citedByText += '<div>掲載元 : ' + n.publication_detail + '</div>'; 
-            citedByText += '<div>発行所 : ' + n.publisher + '</div>';
-            citedByText += '<div>その他 : ' + n.others + '</div>';
-    
-            d3.select('.list-items-cited-by').append('li').html(citedByText);
+            let textListItem = textListItemTemplete(n);
+            d3.select('.list-items-cited-by').append('li').html(textListItem);
           }
         })
       }
+
+    function textListItemTemplete(node) {
+      let textListItem;
+        textListItem = '<div class="text-title">' + node.title + '</div>';
+        textListItem += '<div>著者 : ' + node.author + '</div>';
+        textListItem += '<div>発行年 : ' + node.year + '</div>';
+        if(node.original_work) {textListItem += '<div>原著 : ' + node.original_work + '</div>';}
+        if(node.translator) {textListItem += '<div>翻訳者 : ' + node.translator + '</div>';}
+        if(node.publication_detail) {textListItem += '<div>掲載元 : ' + node.publication_detail + '</div>';}
+        if(node.publisher) {textListItem += '<div>発行所 : ' + node.publisher + '</div>';}
+        if(node.others) {textListItem += '<div>その他 : ' + node.others + '</div>';}
+      
+      return textListItem;
+    }
 
     // 選択解除ボタン
     $('.reset-selected-node').on('click', resetGreph);

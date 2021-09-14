@@ -31,11 +31,11 @@
     </header>
     <main>
       <div class="list-column">
-        <ul class="list-items list-current-item">
+        <div class="list-current-item">
           <div class="list-current-label">選択中の文献</div>
           <button class="reset-selected-node" type="button">Reset</button>
-          <li></li>
-        </ul>
+          <ul class="list-items list-items-current"></ul>
+        </div>
         <div class="list-button-box">
           <div>
             <input type="checkbox" id="hightlight-cited-by-link" name="hightlight-cited-by-link" checked>
@@ -48,11 +48,11 @@
         </div>
         <div class="list-items-box">
           <ul class="tabs-list">
-            <li class="active tabs-list-cited-by" data-tab="#tab1">被引用文献リスト</li>
-            <li class="tabs-list-citation" data-tab="#tab2">引用文献リスト</li>
+            <li class="active" id="tabs-list-cited-by">被引用文献リスト</li>
+            <li id="tabs-list-citation">引用文献リスト</li>
           </ul>
-          <ul id="tab1" class="tab list-items list-items-cited-by active"></ul>
-          <ul id="tab2" class="tab list-items list-items-citation"></ul>
+          <ul id="tab-cited-by" class="tab list-items list-items-cited-by active"></ul>
+          <ul id="tab-citation" class="tab list-items list-items-citation"></ul>
         </div>
       </div>
       <div class="vis-column">

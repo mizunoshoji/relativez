@@ -1,3 +1,5 @@
+// 'use strict';
+
 $(function() {
   var clientWidth, clientHeight, svg, zoom, graphScale, adjustLayout,
       keepedGraphState = '';
@@ -236,13 +238,13 @@ $(function() {
       $('.modal, .filter').fadeOut(200);
 
       function resetGreph() {
-        d3.select('#selected-node').attr('id', null);
+        $('#selected-node').attr('id', null);
         node.style('opacity', 1).select('circle').attr('stroke', 'none').attr('stroke-width', 0);
         node.select('circle').attr('fill', '#666');
         link.style('stroke', '#444').attr('marker-end', 'url(#arrow)');
-        d3.select('.list-current-item li').html('');
-        d3.select('.list-items-cited-by').html('');
-        d3.select('.list-items-citation').html('');
+        $('.list-items-current').empty();
+        $('.list-items-cited-by').empty();
+        $('.list-items-citation').empty();
       }
 
       // 2つのnodeが隣接するか
@@ -282,8 +284,8 @@ $(function() {
           return
         }
     
-        // 選択ノード変更前のリセット処理
-        d3.select('#selected-node').attr('id', null);
+        // 選択ノード変更した時のリセット処理
+        $('#selected-node').attr('id', null);
         node.select('circle').attr('fill', '#666');
         
         var propCitationCheckBox = $('#highlight-citation-link').prop('checked');
@@ -344,17 +346,15 @@ $(function() {
         d3.select(this).style('opacity', 1)
           .attr('id', 'selected-node');
     
-        // 現在の文献データを表示  
+        $('.list-items').empty();
         showCurrentText(d);
-        // 引用文献リスト表示
         showCitationText(d);
-        // 被引用文献リスト表示
         showCitedByText(d);
       }
     
       function mouseover(event, d) {
         tip.style('opacity', 1)
-          .html(d.title)
+          .text(d.title)
           .style('left', (event.pageX + 6) + 'px')
           .style('top', (event.pageY + 6) + 'px');
       }
@@ -365,45 +365,132 @@ $(function() {
     
       function showCurrentText(d) {
         let textListItem = textListItemTemplete(d);
-        d3.select('.list-current-item li').html(textListItem);
+        $('.list-items-current').append(textListItem);
       }
     
       function showCitationText(d) {
-        d3.select('.list-items-citation').html('');
         nodes.forEach(function(n) {
           if (neighboringCitation(d, n)) {
             let textListItem = textListItemTemplete(n);
-            d3.select('.list-items-citation').append('li').html(textListItem);
+            $('.list-items-citation').append(textListItem);
           }
         })
       }
     
       function showCitedByText(d) {
-        d3.select('.list-items-cited-by').html('');
         nodes.forEach(function(n) {
           if (neighboringCitedBy(d, n)) {
             let textListItem = textListItemTemplete(n);
-            d3.select('.list-items-cited-by').append('li').html(textListItem);
+            $('.list-items-cited-by').append(textListItem);
           }
         })
       }
 
-    function textListItemTemplete(node) {
-      let textListItem;
-        textListItem = '<div class="text-title">' + node.title + '</div>';
-        textListItem += '<div>著者 : ' + node.author + '</div>';
-        textListItem += '<div>発行年 : ' + node.year + '</div>';
-        if(node.original_work) {textListItem += '<div>原著 : ' + node.original_work + '</div>';}
-        if(node.translator) {textListItem += '<div>翻訳者 : ' + node.translator + '</div>';}
-        if(node.publication_detail) {textListItem += '<div>掲載元 : ' + node.publication_detail + '</div>';}
-        if(node.publisher) {textListItem += '<div>発行所 : ' + node.publisher + '</div>';}
-        if(node.others) {textListItem += '<div>その他 : ' + node.others + '</div>';}
-      
-      return textListItem;
-    }
+      function textListItemTemplete(node) {
+        let textListItem = $('<li></li>')
+          .append($('<div></div>').addClass('text-title').text(node.title))
+          .append($('<div></div>').text('著者 : ' + node.author))
+          .append($('<div></div>').text('発行年 : ' + node.year));
 
-    // 選択解除ボタン
-    $('.reset-selected-node').on('click', resetGreph);
+          if(node.original_work) {
+            textListItem.append($('<div></div>').text('原著 : ' + node.original_work));
+          }
+          if(node.translator) {
+            textListItem.append($('<div></div>').text('翻訳者 : ' + node.translator));
+          }
+          if(node.publication_detail) {
+            textListItem.append($('<div></div>').text('掲載元 : ' + node.publication_detail));
+          }
+          if(node.publisher) {
+            textListItem.append($('<div></div>').text('発行所 : ' + node.publisher));
+          }
+          if (node.link_url_1 || node.link_url_2 || node.link_url_3) {
+            textListItem.append($('<div>オンラインリンク : </div>').append($('<ul></ul>')));
+            if (node.link_url_1.match(/^https?:\/\//)) {
+              if(node.link_text_1 && node.link_url_1) {
+                textListItem.find('ul')
+                  .append($('<li></li>')
+                    .append($('<a></a>')
+                    .attr({
+                      href: node.link_url_1,
+                      target: '_blank',
+                      rel: 'noopener noreferrer'
+                    })
+                    .text(node.link_text_1))
+                  );
+              } else if (node.link_url_1) {
+                textListItem.find('ul')
+                  .append($('<li></li>')
+                    .append($('<a></a>')
+                    .attr({
+                      href: node.link_url_1,
+                      target: '_blank',
+                      rel: 'noopener noreferrer'
+                    })
+                    .text(node.link_url_1))
+                  );
+              }
+            }
+            if (node.link_url_2.match(/^https?:\/\//)) {
+              if(node.link_text_2 && node.link_url_2) {
+                textListItem.find('ul')
+                  .append($('<li></li>')
+                    .append($('<a></a>')
+                    .attr({
+                      href: node.link_url_2,
+                      target: '_blank',
+                      rel: 'noopener noreferrer'
+                    })
+                    .text(node.link_text_2))
+                  );
+              } else if (node.link_url_2) {
+                textListItem.find('ul')
+                  .append($('<li></li>')
+                    .append($('<a></a>')
+                    .attr({
+                      href: node.link_url_2,
+                      target: '_blank',
+                      rel: 'noopener noreferrer'
+                    })
+                    .text(node.link_url_2))
+                  );
+              }
+            }
+            if (node.link_url_3.match(/^https?:\/\//)) {
+              if(node.link_text_3 && node.link_url_3) {
+                textListItem.find('ul')
+                  .append($('<li></li>')
+                    .append($('<a></a>')
+                    .attr({
+                      href: node.link_url_3,
+                      target: '_blank',
+                      rel: 'noopener noreferrer'
+                    })
+                    .text(node.link_text_3))
+                  );
+              } else if (node.link_url_3) {
+                textListItem.find('ul')
+                  .append($('<li></li>')
+                    .append($('<a></a>')
+                    .attr({
+                      href: node.link_url_3,
+                      target: '_blank',
+                      rel: 'noopener noreferrer'
+                    })
+                    .text(node.link_url_3))
+                  );
+              }
+            }
+          }
+          if(node.others) {
+            textListItem.append($('<div></div>').text('その他 : ' + node.others));
+          }
+          
+        return textListItem;
+      }
+
+      // 選択解除ボタン
+      $('.reset-selected-node').on('click', resetGreph);
     
     }).catch(function(error) {
       console.log(error);
@@ -415,11 +502,17 @@ $(function() {
       $(this).preventDefault();
     })
 
-    $('.tabs-list li').on('click', function(){
-      var tabid = $(this).attr('data-tab');
+    $('#tabs-list-cited-by').on('click', function(){
       $('.tabs-list li, tab').removeClass('active');
       $('.tab').hide();
-      $(tabid).show();
+      $('#tab-cited-by').show();
+      $(this).addClass('active');
+    })
+
+    $('#tabs-list-citation').on('click', function(){
+      $('.tabs-list li, tab').removeClass('active');
+      $('.tab').hide();
+      $('#tab-citation').show();
       $(this).addClass('active');
     })
 
@@ -475,18 +568,16 @@ $(function() {
       let files = this.files;
       let file = files[0];
 
-      $('#' + inputId + ' .error-msg-box').empty();
-      $('#' + inputId + ' .file-data').empty();
+      $('.modal').children('#' + inputId).children('.error-msg-box').empty();
+      $('.modal').children('#' + inputId).children('.file-data').empty();
 
       if (file.name.endsWith('.csv')) {
-        $('#' + inputId + ' .file-data').html(function() {
-          fileData = '<div>ファイル名 : ' + file.name + '</div>' + 
-                    '<div>ファイルサイズ : ' + returnFileSize(file.size) + '</div>';
-          return fileData;
-        });
+        $('.modal').children('#' + inputId).children('.file-data')
+          .append($('<div></div>').text('ファイル名 : ' + file.name))
+          .append($('<div></div>').text('ファイルサイズ : ' + returnFileSize(file.size)));
       } else {
         errorMsg = '入力不可能なファイル形式です。カンマ区切り形式のファイル(.csv)を選択してください。';
-        $('#' + inputId + ' .error-msg-box').text(errorMsg);
+        $('.modal').children('#' + inputId).children('.error-msg-box').text(errorMsg);
       }
     }
 
@@ -534,7 +625,7 @@ $(function() {
         const nodesText = fileText[0];
         const linksText = fileText[1];
         
-        if (!nodesText.startsWith('node_id,title,author,year,translator,original_work,publisher,publication_detail,others')) {
+        if (!nodesText.startsWith('node_id,title,author,year,translator,original_work,publisher,publication_detail,link_text_1,link_url_1,link_text_2,link_url_2,link_text_3,link_url_3,others')) {
           errorMsg = '文献表ファイルのCSVデータ構造に問題があります。正しいデータ構造の文献表ファイルを入力してください。';
           $('#nodes-input .error-msg-box').text(errorMsg);
           throw 'csv data format error.';

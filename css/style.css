@@ -52,10 +52,6 @@ a:hover {
 	color: #bfa925;
 }
 
-a:visited {
-	color: #eaeaea;
-}
-
 .sub-text {
 	font-size: 14px;
 }
@@ -130,6 +126,14 @@ header {
 	color: #AAA;
 	line-height: 1.8;
 	font-size: 14px;
+}
+
+.list-items a {
+	color: #5983ff;
+}
+
+.list-items a:hover {
+	color: #bfa925;
 }
 
 .list-current-item {
@@ -207,11 +211,11 @@ header {
 	cursor: pointer;
 }
 
-.tabs-list-cited-by {
+#tabs-list-cited-by {
 	color: #bfa925;
 }
 
-.tabs-list-citation {
+#tabs-list-citation {
 	color: #c44caa;
 }
 
@@ -248,14 +252,14 @@ header {
 	border: solid #c44caa 1px;
 }
 
-.tabs-list-cited-by.active {
+#tabs-list-cited-by.active {
 	position: relative;
 	top: 1px;
 	border: 1px solid #bfa925;
 	border-bottom: 1px solid #222;
 }
 
-.tabs-list-citation.active {
+#tabs-list-citation.active {
 	position: relative;
 	top: 1px;
 	border: 1px solid #c44caa;

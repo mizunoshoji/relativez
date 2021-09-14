@@ -126,6 +126,7 @@ header {
 	color: #AAA;
 	line-height: 1.8;
 	font-size: 14px;
+	word-break: break-all;
 }
 
 .list-items a {

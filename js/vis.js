@@ -48,7 +48,136 @@ $(function() {
       d3.select('svg g').attr('transform', e.transform + 'translate(' + clientWidth * adjustLayout + ', ' + clientHeight * adjustLayout + ') scale(' + graphScale + ')');
   }
 
-  function addCharToYear(nodes, nodesLength) {
+  function validateData(nodes, links) {
+    let nodesErrorMessages = [];
+    let linksErrorMessages = [];
+    const rules = {
+      node_id: {
+        regexp: /[0-9]/,
+        error: 'node_idは数値で入力してください。',
+      },
+      title: {
+        regexp: /^.{0,140}$/,
+        error: 'title(文献名)は140文字以内で入力してください。',
+      },
+      author: {
+        regexp: /^.{0,40}$/,
+        error: 'author(著者)は40文字以内で入力してください。',
+      },
+      year: {
+        regexp: /^.{0,4}$/,
+        error: 'year(発行年)は4文字以内で入力してください。',
+      },
+      translator: {
+        regexp: /^.{0,140}$/,
+        error: 'translator(翻訳者)は140文字以内で入力してください。',
+      },
+      original_work: {
+        regexp: /^.{0,170}$/,
+        error: 'original_work(原著)は170文字以内で入力してください。',
+      },
+      publisher: {
+        regexp: /^.{0,140}$/,
+        error: 'publisher(発行所)は140文字以内で入力してください。',
+      },
+      publication_detail: {
+        regexp: /^.{0,140}$/,
+        error: 'publication_detail(掲載元)は140文字以内で入力してください。',
+      },
+      link_text_1: {
+        regexp: /^.{0,140}$/,
+        error: 'link_text_1(オンラインリンク文字列1)は140文字以内で入力してください。',
+      },
+      link_text_2: {
+        regexp: /^.{0,140}$/,
+        error: 'link_text_2(オンラインリンク文字列2)は140文字以内で入力してください。',
+      },
+      link_text_3: {
+        regexp: /^.{0,140}$/,
+        error: 'link_text_3(オンラインリンク文字列3)は140文字以内で入力してください。',
+      },
+      others: {
+        regexp: /^.{0,140}$/,
+        error: 'others(その他)は140文字以内で入力してください。',
+      },
+      source: {
+        regexp: /[0-9]/,
+        error: 'sourceは数値で入力してください。',
+      },
+      target: {
+        regexp: /[0-9]/,
+        error: 'targetは数値で入力してください。',
+      },
+    }
+
+    $('.error-msg-box').empty();
+    
+    if (nodes.length > 550) {
+      nodesErrorMessages.push('文献数が多すぎます。現在の文献数は'+ nodes.length + 'です。文献数は550件以下にしてください。');
+    }
+
+    for (let i=0; i<nodes.length; i++) {
+      if (!(rules.node_id.regexp.test(nodes[i].node_id))) {
+        nodesErrorMessages.push(i+1 + '行目のデータ : ' + rules.node_id.error);
+      }
+      if (!(rules.title.regexp.test(nodes[i].title))) {
+        nodesErrorMessages.push(i+1 + '行目のデータ : ' + rules.title.error);
+      }
+      if (!(rules.author.regexp.test(nodes[i].author))) {
+        nodesErrorMessages.push(i+1 + '行目のデータ : ' + rules.author.error);
+      }
+      if (!(rules.year.regexp.test(nodes[i].year))) {
+        nodesErrorMessages.push(i+1 + '行目のデータ : ' + rules.year.error);
+      }
+      if (!(rules.translator.regexp.test(nodes[i].translator))) {
+        nodesErrorMessages.push(i+1 + '行目のデータ : ' + rules.translator.error);
+      }
+      if (!(rules.original_work.regexp.test(nodes[i].original_work))) {
+        nodesErrorMessages.push(i+1 + '行目のデータ : ' + rules.original_work.error);
+      }
+      if (!(rules.publisher.regexp.test(nodes[i].publisher))) {
+        nodesErrorMessages.push(i+1 + '行目のデータ : ' + rules.publisher.error);
+      }
+      if (!(rules.publication_detail.regexp.test(nodes[i].publication_detail))) {
+        nodesErrorMessages.push(i+1 + '行目のデータ : ' + rules.publication_detail.error);
+      }
+      if (!(rules.link_text_1.regexp.test(nodes[i].link_text_1))) {
+        nodesErrorMessages.push(i+1 + '行目のデータ : ' + rules.link_text_1.error);
+      }
+      if (!(rules.link_text_2.regexp.test(nodes[i].link_text_2))) {
+        nodesErrorMessages.push(i+1 + '行目のデータ : ' + rules.link_text_2.error);
+      }
+      if (!(rules.link_text_3.regexp.test(nodes[i].link_text_3))) {
+        nodesErrorMessages.push(i+1 + '行目のデータ : ' + rules.link_text_3.error);
+      }
+      if (!(rules.others.regexp.test(nodes[i].others))) {
+        nodesErrorMessages.push(i+1 + '行目のデータ : ' + rules.others.error);
+      }
+    }
+
+    for (let i=0; i<links.length; i++) {
+      if (!(rules.source.regexp.test(links[i].source))) {
+        linksErrorMessages.push(i+1 + '行目のデータ：' + rules.source.error);
+      }
+      if (!(rules.target.regexp.test(links[i].target))) {
+        linksErrorMessages.push(i+1 + '行目のデータ：' + rules.target.error);
+      }
+    }
+
+    if(nodesErrorMessages.length || linksErrorMessages.length) {
+      nodesErrorMessages.forEach(function(e){
+        $('#nodes-input .error-msg-box').append($('<p></p>').text(e));
+      });
+      linksErrorMessages.forEach(function(e){
+        $('#links-input .error-msg-box').append($('<p></p>').text(e));
+      });
+      throw 'Error : validateData method';
+    } else {
+      return;
+    }
+  }
+
+  function addCharToYear(nodes) {
     var sameAuthorYearNodesSets = [];
     var sameAuthorYearNodes = [];
     var isCheckedNode = false;
@@ -58,7 +187,7 @@ $(function() {
       ALPHABETCHAR.push(String.fromCharCode(i));
     }
 
-    for (let i=0; i<nodesLength; i++) {
+    for (let i=0; i<nodes.length; i++) {
       var node_id = nodes[i].node_id;
       var currentAuthor = nodes[i].author;
       var currentYear = nodes[i].year;
@@ -98,9 +227,9 @@ $(function() {
   }
 
   /* 
-  * createGraph関数
-  * @param 
-  */
+   * createGraph関数
+   * @param 
+   */
   function createGraph(nodesObjUrl, linksObjUrl) {
     Promise.all([
       d3.csv(nodesObjUrl),
@@ -111,20 +240,16 @@ $(function() {
 
       var nodes = data[0];
       var links = data[1];
-      var nodesLength = nodes.length;
 
-      if (nodesLength > 550) {
-        alert('文献数が多すぎます。現在の文献数は'+ nodesLength + 'です。文献数は550件以下にしてください。');
-        return;
-      }
+      validateData(nodes, links);
 
-      nodes = addCharToYear(nodes, nodesLength);
+      nodes = addCharToYear(nodes);
 
       // scale change
-      if (nodesLength <= 100) {
+      if (nodes.length <= 100) {
         graphScale = '1';
         adjustLayout = 0;
-      } else if (nodesLength <= 550) {
+      } else if (nodes.length <= 550) {
         graphScale = '.45';
         adjustLayout = 0.25;
       }

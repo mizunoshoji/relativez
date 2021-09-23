@@ -25,7 +25,7 @@ body {
   color: #eaeaea;
 }
 
-h1,
+h1, h2, h3, h4, h5,
 p {
   margin: 0;
 }
@@ -65,9 +65,6 @@ a:hover {
 	height: 100vh;
 }
 
-main {
-	display: flex;
-}
 /**
  * #header 
  */
@@ -89,7 +86,7 @@ header {
 
 .header-menu li {
 	display: inline-block;
-	margin-right: 24px;
+	margin-right: 16px;
 	padding: 4px 0;
 	pointer-events: auto;
 }
@@ -110,12 +107,20 @@ header {
  * #list-column
  */
 .list-column {
+	display: flex;
+	flex-direction: column;
 	position: fixed;
 	z-index: 997;
 	left: 16px;
-	width: 300px;
-	max-height: 100vh;
+	width: 320px;
+	height: 100%;
 	padding-top: 70px;
+}
+
+.list-items-box {
+	display: flex;
+	overflow-y: hidden;
+	background-color: #000000BB;
 }
 
 .list-container {
@@ -123,6 +128,9 @@ header {
 }
 
 .list-items {
+	overflow-y: scroll;
+	width: 100%;
+	padding: 12px;
 	color: #AAA;
 	line-height: 1.8;
 	font-size: 14px;
@@ -137,71 +145,49 @@ header {
 	color: #bfa925;
 }
 
+/* 選択中の文献 */
 .list-current-item {
-	position: fixed;
-	right: 16px;
-	z-index: 997;
-	width: 300px;
-  padding: 12px;
-	background-color: #222222ee;
+	margin-bottom: 16px;
 	border: 1px solid #4169e1;
+	border-radius: 10px;
+	background-color: #000000BB;
 }
-/* 選択中文献データ */
+
 .list-current-label {
+	padding: 12px 12px 0px;
+	font-size: 14px;
 	color: #5983ff;
 }
 
-.list-items > li > div:not(.text-title) {
+#list-items-current {
+	max-height: 25vh;
+}
+
+#reset-selected-node {
+	position: relative;
+	float: right;
+	top: 5px;
+	right: 12px;
+	color: #eaeaea;
+}
+
+.list-items li div {
 	padding-bottom: 6px;
 }
 
-.list-items > li > div:last-child {
-	padding-bottom: 0;
-}
-
 .text-title {
-	padding: 16px 0;
+	padding: 0;
 	font-size: 16px;
 	color: #eaeaea;
 }
 
-.list-current-item button {
-	position: relative;
-	top: -24px;
-	float: right;
-	color:#eaeaea
 
-}
-
-/* listエリア */
 .list-button-box {
 	margin-bottom: 8px;
 }
 
-.list-items-box {
-	background-color: #222222ee;
-}
-
-/* ファイル入力UI */
-.button-component {
-	padding: 5px 10px;
-	font-size: 14px;
-	color: #bfa925;
-	border: 1px solid #bfa925;
-}
-
-.list-button-box div {
-	display: inline-block;
-	font-size: 14px;
-	margin-left: 8px;
-}
-
-.checkbox-label-cited-by {
-	color: #bfa925;
-}
-
-.checkbox-label-citaion {
-	color: #c44caa;
+.list-button-box label {
+	background-color: #222;
 }
 
 /* 引用文献・被引用文献リスト */
@@ -210,6 +196,8 @@ header {
 	padding: 10px 10px 0px 10px;
 	font-size: 14px;
 	cursor: pointer;
+	border-radius: 10px 10px 0px 0px;
+	background-color: #000000BB;
 }
 
 #tabs-list-cited-by {
@@ -222,49 +210,80 @@ header {
 
 .tab {
 	display: none;
-	max-height: 82vh;
-	padding: 12px;
-	overflow-y: scroll;
+	max-height: 55vh;
 }
 
-.tab::-webkit-scrollbar {
-  width: 10px;
+.list-items::-webkit-scrollbar {
+	width: 10px;
 }
 
-.tab::-webkit-scrollbar-track {
-  background-color: #222;
+.list-items::-webkit-scrollbar-track {
+	background-color: #222;
+	border-radius: 10px;
+	margin: 10px 0px;
 }
 
-.tab::-webkit-scrollbar-thumb {
-  background-color: #444;
+.list-items::-webkit-scrollbar-thumb {
+	background-color: #666;
+	border-radius: 10px;
+	margin: 10px 0px;
 }
 
+.tab.list-items > li {
+	margin-bottom: 20px;
+}
+.tab.list-items > li:last-child {
+	margin-bottom: 0;
+}
 
 /* When active state */
 .active{
 	display: block;
 }
 
-.list-items-cited-by {
+#tab-cited-by {
 	border: solid #bfa925 1px;
+	border-radius: 0px 10px 10px 10px;
 }
 
-.list-items-citation {
+#tab-citation {
 	border: solid #c44caa 1px;
+	border-radius: 10px;
 }
 
 #tabs-list-cited-by.active {
 	position: relative;
 	top: 1px;
 	border: 1px solid #bfa925;
-	border-bottom: 1px solid #222;
+	border-bottom: 2px solid #222;
 }
 
 #tabs-list-citation.active {
 	position: relative;
 	top: 1px;
 	border: 1px solid #c44caa;
-	border-bottom: 1px solid #222;
+	border-bottom: 2px solid #222;
+}
+
+.side-bar-switcher {
+	position: absolute;
+	right: -25px;
+  color: #FFF;
+}
+
+/* チェックボックス */
+.list-button-box div {
+	display: inline-block;
+	font-size: 14px;
+	margin-left: 8px;
+}
+
+.checkbox-label-cited-by {
+	color: #bfa925;
+}
+
+.checkbox-label-citaion {
+	color: #c44caa;
 }
 
 /* モーダルウィンドウ　ファイル選択 */
@@ -282,8 +301,9 @@ header {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -70%);
   z-index: 999;
+	max-width: 700px;
 	max-height: 85vh;
 	padding: 24px;
 	color: #eaeaea;
@@ -293,19 +313,20 @@ header {
 	overflow: scroll;
 }
 
-.modal > * {
+.modal-contents > div > * {
 	margin-bottom: 24px;
 }
 
-.modal > *:last-child {
+.modal-contents > div > *:last-child {
 	margin-bottom: 0;
 }
 
-.modal h1 {
+.modal-contents h1 {
 	font-size: 18px;
 }
 
-.modal h2 {
+.modal-contents h2 {
+	margin-bottom: 16px;
 	font-size: 16px;
 }
 
@@ -333,11 +354,13 @@ header {
 }
 
 .button-component {
+	min-width: 80px;
 	padding: 4px 12px;
 	color: #bfa925;
 	background-color: #222;
 	border: 1px solid #bfa925;
 	border-radius: 30px;
+	font-size: 14px;
 }
 
 .button-component:hover {
@@ -348,6 +371,20 @@ header {
 
 .file-selector {
 	display: none;
+}
+
+#modal-contents-file-select label {
+	display: block;
+	margin-bottom: 16px;
+}
+
+#data-selection {
+	display: block;
+	min-width: 300px;
+	padding: 12px;
+	color: #FFF;
+	background-color: #333;
+	border-radius: 10px;
 }
 
 /* エラーメッセージ */

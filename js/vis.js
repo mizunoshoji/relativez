@@ -250,7 +250,7 @@ $(function() {
         graphScale = '1';
         adjustLayout = 0;
       } else if (nodes.length <= 550) {
-        graphScale = '.45';
+        graphScale = '.5';
         adjustLayout = 0.25;
       }
 
@@ -260,10 +260,10 @@ $(function() {
       var simulation = d3.forceSimulation(nodes)
         .force('link', d3.forceLink().links(links).id(function(n) { return n.node_id }).distance(200))
         .force('charge', d3.forceManyBody().strength(-30))
-        .force('center', d3.forceCenter(clientWidth / 2, clientHeight / 2))
-        .force('collige', d3.forceCollide().radius(60).strength(1).iterations(5))
+        .force('center', d3.forceCenter(clientWidth * 0.7, clientHeight * 0.5))
+        .force('collige', d3.forceCollide().radius(60).strength(1).iterations(4))
         .velocityDecay(0.4)
-        .alphaMin(0.2)
+        .alphaMin(0.15)
         .on('tick', ticked);
       
       // tick
@@ -367,9 +367,9 @@ $(function() {
         node.style('opacity', 1).select('circle').attr('stroke', 'none').attr('stroke-width', 0);
         node.select('circle').attr('fill', '#666');
         link.style('stroke', '#444').attr('marker-end', 'url(#arrow)');
-        $('.list-items-current').empty();
-        $('.list-items-cited-by').empty();
-        $('.list-items-citation').empty();
+        $('#list-items-current').empty();
+        $('#tab-cited-by').empty();
+        $('#tab-citation').empty();
       }
 
       // 2つのnodeが隣接するか
@@ -490,23 +490,23 @@ $(function() {
     
       function showCurrentText(d) {
         let textListItem = textListItemTemplete(d);
-        $('.list-items-current').append(textListItem);
+        $('#list-items-current').append(textListItem);
       }
     
       function showCitationText(d) {
         nodes.forEach(function(n) {
           if (neighboringCitation(d, n)) {
             let textListItem = textListItemTemplete(n);
-            $('.list-items-citation').append(textListItem);
+            $('#tab-citation').append(textListItem);
           }
         })
       }
-    
+      
       function showCitedByText(d) {
         nodes.forEach(function(n) {
           if (neighboringCitedBy(d, n)) {
             let textListItem = textListItemTemplete(n);
-            $('.list-items-cited-by').append(textListItem);
+            $('#tab-cited-by').append(textListItem);
           }
         })
       }
@@ -615,7 +615,7 @@ $(function() {
       }
 
       // 選択解除ボタン
-      $('.reset-selected-node').on('click', resetGreph);
+      $('#reset-selected-node').on('click', resetGreph);
     
     }).catch(function(error) {
       console.log(error);
@@ -654,6 +654,25 @@ $(function() {
           .attr('marker-end', 'url(#arrow)');
     });
 
+    // サイドバー開閉
+    $('#side-bar-switcher-hide').on('click', function(){
+      $('.list-column').css({
+        left: '-320px',
+        transition: 'left 0.3s',
+      });
+      $('#side-bar-switcher-hide').hide();
+      $('#side-bar-switcher-show').show();
+    });
+
+    $('#side-bar-switcher-show').on('click', function(){
+      $('.list-column').css({
+        left: '16px',
+        transition: 'left 0.3s',
+      });
+      $('#side-bar-switcher-show').hide();
+      $('#side-bar-switcher-hide').show();
+    });
+
     $('input[name="hightlight-cited-by-link"]').on('change', function() {
       var propCitedByChechBox = $('#hightlight-cited-by-link').prop('checked');
 
@@ -665,15 +684,6 @@ $(function() {
         d3.selectAll('[data-linkType="cited-by"]')
           .style('stroke', '#444')
           .attr('marker-end', 'url(#arrow)');
-    });
-
-    // ファイル入力　モーダルウィンドウ
-    $('.open-modal').on('click', function() {
-      $('.filter, .modal').fadeIn(200);
-    });
-
-    $('.modal-close').on('click', function() {
-      $('.modal, .filter').fadeOut(200);
     });
 
     $('#nodes-input .file-select-btn').on('click', function() {
@@ -693,16 +703,16 @@ $(function() {
       let files = this.files;
       let file = files[0];
 
-      $('.modal').children('#' + inputId).children('.error-msg-box').empty();
-      $('.modal').children('#' + inputId).children('.file-data').empty();
+      $('.modal').find('#' + inputId).children('.error-msg-box').empty();
+      $('.modal').find('#' + inputId).children('.file-data').empty();
 
       if (file.name.endsWith('.csv')) {
-        $('.modal').children('#' + inputId).children('.file-data')
+        $('.modal').find('#' + inputId).children('.file-data')
           .append($('<div></div>').text('ファイル名 : ' + file.name))
           .append($('<div></div>').text('ファイルサイズ : ' + returnFileSize(file.size)));
       } else {
         errorMsg = '入力不可能なファイル形式です。カンマ区切り形式のファイル(.csv)を選択してください。';
-        $('.modal').children('#' + inputId).children('.error-msg-box').text(errorMsg);
+        $('.modal').find('#' + inputId).children('.error-msg-box').text(errorMsg);
       }
     }
 

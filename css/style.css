@@ -120,7 +120,6 @@ header {
 .list-items-box {
 	display: flex;
 	overflow-y: hidden;
-	background-color: #000000BB;
 }
 
 .list-container {
@@ -211,6 +210,7 @@ header {
 .tab {
 	display: none;
 	max-height: 55vh;
+	background-color: #000000BB;
 }
 
 .list-items::-webkit-scrollbar {
@@ -268,6 +268,8 @@ header {
 .side-bar-switcher {
 	position: absolute;
 	right: -25px;
+	width: 24px;
+	height: 24px;
   color: #FFF;
 }
 
@@ -305,6 +307,7 @@ header {
   z-index: 999;
 	max-width: 700px;
 	max-height: 85vh;
+	min-width: 320px;
 	padding: 24px;
 	color: #eaeaea;
   background-color: #222;

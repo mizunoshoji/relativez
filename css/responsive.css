@@ -1,0 +1,56 @@
+.mobile-only {
+  display: none;
+}
+
+#mobile-menu-btn,
+#mobile-menu-close-btn {
+  position: absolute;
+  right: 10px;
+  pointer-events: fill;
+}
+
+@media screen and (max-width: 600px) {
+  #mobile-menu-btn {
+    display: block;
+  }
+
+  .header {
+    padding: 16px;
+  }
+
+  .header-menu {
+    float: none;
+    position: fixed;
+    top: 70px;
+    right: -320px;
+    width: 320px;
+    padding: 30px;
+    background-color: #000000BB;
+  }
+
+  .header-menu li {
+    display: block;
+    margin-bottom: 16px;
+  }
+  .header-menu li:last-child {
+    margin-bottom: 0;
+  }
+
+  .list-column {
+    left: -320px;
+  }
+
+  #side-bar-switcher-hide {
+    display: none;
+  }
+
+  #side-bar-switcher-show {
+    display: block;
+  }
+
+  .modal {
+    top: 70px;
+    left: 0px;
+    transform: none;
+  }
+}

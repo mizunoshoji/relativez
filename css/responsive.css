@@ -9,23 +9,24 @@
   pointer-events: fill;
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 980px) {
   #mobile-menu-btn {
     display: block;
   }
 
-  .header {
+  header {
     padding: 16px;
+    background-color: #000000DD;
   }
 
   .header-menu {
     float: none;
     position: fixed;
-    top: 70px;
+    top: 62px;
     right: -320px;
     width: 320px;
     padding: 30px;
-    background-color: #000000BB;
+    background-color: #000000DD;
   }
 
   .header-menu li {
@@ -39,6 +40,11 @@
   .list-column {
     left: -320px;
   }
+
+  .list-button-box label {
+    background-color: none;
+  }
+  
 
   #side-bar-switcher-hide {
     display: none;

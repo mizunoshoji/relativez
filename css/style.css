@@ -149,7 +149,7 @@ header {
 	margin-bottom: 16px;
 	border: 1px solid #4169e1;
 	border-radius: 10px;
-	background-color: #000000BB;
+	background-color: #000000DD;
 }
 
 .list-current-label {
@@ -196,7 +196,7 @@ header {
 	font-size: 14px;
 	cursor: pointer;
 	border-radius: 10px 10px 0px 0px;
-	background-color: #000000BB;
+	background-color: #000000DD;
 }
 
 #tabs-list-cited-by {
@@ -210,7 +210,7 @@ header {
 .tab {
 	display: none;
 	max-height: 55vh;
-	background-color: #000000BB;
+	background-color: #000000DD;
 }
 
 .list-items::-webkit-scrollbar {
@@ -267,10 +267,10 @@ header {
 
 .side-bar-switcher {
 	position: absolute;
-	right: -25px;
+	right: -28px;
 	width: 24px;
-	height: 24px;
-  color: #FFF;
+	height: 30px;
+	background-color: #000000DD;
 }
 
 /* チェックボックス */

@@ -16,7 +16,7 @@
 
   header {
     padding: 16px;
-    background-color: #000000DD;
+    background-color: #000000CC;
   }
 
   .header-menu {
@@ -26,7 +26,7 @@
     right: -320px;
     width: 320px;
     padding: 30px;
-    background-color: #000000DD;
+    background-color: #000000CC;
   }
 
   .header-menu li {

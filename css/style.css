@@ -213,6 +213,7 @@ header {
 	background-color: #000000CC;
 }
 
+/* スクロールバー */
 .list-items::-webkit-scrollbar {
 	width: 10px;
 }
@@ -224,6 +225,22 @@ header {
 }
 
 .list-items::-webkit-scrollbar-thumb {
+	background-color: #666;
+	border-radius: 10px;
+	margin: 10px 0px;
+}
+
+.modal::-webkit-scrollbar {
+	width: 10px;
+}
+
+.modal::-webkit-scrollbar-track {
+	background-color: #222;
+	border-radius: 10px;
+	margin: 10px 0px;
+}
+
+.modal::-webkit-scrollbar-thumb {
 	background-color: #666;
 	border-radius: 10px;
 	margin: 10px 0px;

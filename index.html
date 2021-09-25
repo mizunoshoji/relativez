@@ -6,8 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>relativez</title>
   <meta name="description" content="relativezは文献の引用関係を可視化するツールです。">
-  <script src="js/libs/d3.min.js" charset="utf-8"></script>
-  <script src="js/libs/jquery.min.js" charset="utf-8"></script>
   <link rel="stylesheet" href="css/reset.css">
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/responsive.css">
@@ -74,6 +72,16 @@
       <div class="modal-contents"></div>
     </div>
   </div>
+  <script src="js/libs/d3.min.js" charset="utf-8"></script>
+  <script src="js/libs/jquery.min.js" charset="utf-8"></script>
+  <script>
+    var dataSelection;
+    d3.json('data/data_selection.json').then(function(data){
+      dataSelection = data;
+    }).catch(function(error){
+      console.log(error);
+    });
+  </script>
   <script type="text/javascript" src="js/modal.js"></script>
   <script type="text/javascript" src="js/responsive.js"></script>
   <script type="text/javascript" src="js/vis.js"></script>

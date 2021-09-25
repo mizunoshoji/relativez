@@ -70,7 +70,6 @@ $(function() {
         )
       )
     );
-
   // データソース選択
   $('.modal-contents')
     .append($('<div>')
@@ -89,11 +88,12 @@ $(function() {
           id: 'data-selection',
           name: 'data-selection',
         })
-        .append($('<option>').attr('value', 'sample-1').text('サンプル1'))
-        .append($('<option>').attr('value', 'sample-2').text('サンプル2'))
-        .append($('<option>').attr('value', 'sample-3').text('サンプル3'))
+        .append($('<option>').attr('value', 'initial_graph').text('日本の美術'))
+        .append($('<option>').attr('value', 'sample_1').text('サンプル1'))
+        .append($('<option>').attr('value', 'sample_2').text('サンプル2'))
+        .append($('<option>').attr('value', 'sample_3').text('サンプル3'))
       )
-      .append($('<button>').addClass('button-component').attr('id', 'select-graph-btn').text('ネットワークグラフ表示'))
+      .append($('<button>').addClass('button-component').attr('id', 'show-selected-graph-btn').text('ネットワークグラフ表示'))
     );
 
     $('#data-select-btn').on('click', function(){

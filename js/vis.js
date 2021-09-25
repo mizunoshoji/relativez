@@ -260,7 +260,7 @@ $(function() {
       var simulation = d3.forceSimulation(nodes)
         .force('link', d3.forceLink().links(links).id(function(n) { return n.node_id }).distance(200))
         .force('charge', d3.forceManyBody().strength(-30))
-        .force('center', d3.forceCenter(clientWidth * 0.7, clientHeight * 0.5))
+        .force('center', d3.forceCenter(clientWidth * 0.5, clientHeight * 0.5))
         .force('collige', d3.forceCollide().radius(60).strength(1).iterations(4))
         .velocityDecay(0.4)
         .alphaMin(0.15)
@@ -698,6 +698,8 @@ $(function() {
     $('.file-selector').on('change', onChangeFileInput);
     $('#create-graph-btn').on('click', onClickCreateGraph);
 
+    // データソース選択
+    $('#show-selected-graph-btn').on('click', showSelectedGraph);
     function onChangeFileInput() {
       let inputId = $(this).parent().attr('id');
       let files = this.files;
@@ -778,5 +780,19 @@ $(function() {
       }).catch(function(error) {
         console.log(error);
       })
+    }
+
+    function showSelectedGraph() {
+      var keyName = $('#data-selection').val();
+      Promise.all([
+        d3.blob(dataSelection[keyName].nodes_path),
+        d3.blob(dataSelection[keyName].links_path)
+      ]).then(function(blob) {
+        const nodeObjUrl = URL.createObjectURL(blob[0]);
+        const linksObjUrl = URL.createObjectURL(blob[1]);
+        createGraph(nodeObjUrl, linksObjUrl);
+      }).catch(function(error){
+        console.log(error);
+      });
     }
 })

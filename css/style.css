@@ -302,9 +302,8 @@ header {
 
 .modal {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -70%);
+  top: 70px;
+  left: 30%;
   z-index: 999;
 	max-width: 700px;
 	max-height: 85vh;

@@ -68,15 +68,26 @@ $(function() {
         .text('relativezが想像する理想的なシーンは、複数の独立したアーティストが集まる場所において、個々人の持つ問題意識について、'+
               'お互いがお互いにその複雑さを理解しつつ共通点を見出せる環境です。このWebアプリケーションが会話や勉強会など様々な場面で'+
               '制作の一助になることを願っています。'))
-      .append($('<h1>').text('relativezプロジェクトへの貢献方法'))
-      .append($('<h2>').text('データ提供者として貢献する'))
+      .append($('<h1>').text('relativezプロジェクトへの参加方法'))
+      .append($('<h2>').text('データ提供者として参加する'))
       .append($('<p>')
         .text(
           'データソースを作成して提供していただくと、relativezにアクセスした他のユーザーが閲覧可能なネットワークグラフとして表示します。'+
           '「データソース選択」から提供していただいたデータが選択可能になります。'
         )
       )
-      .append($('<h2>').text('開発者として貢献する'))
+      .append($('<p>')
+        .text('relativezにデータを提供していただける方はTwitterのDMでご連絡ください。')
+        .append($('<br>'))
+        .append($('<a>').attr({
+          href: 'https://twitter.com/relativez_2021',
+          target: '_blank',
+          rel: 'noopener noreferrer'
+        })
+        .text('Twitter @relativez_2021'))
+      )
+      
+      .append($('<h2>').text('開発者として参加する'))
       .append($('<p>')
         .text(
           'このWebアプリはMITライセンスを適用しており、自由に複製・配布・修正されることを無制限に許可したオープンソースプロジェクトです。'+

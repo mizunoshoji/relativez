@@ -312,7 +312,7 @@ header {
   background-color: #222;
 	border: 1px solid #bfa925;
 	border-radius: 10px;
-	overflow: scroll;
+	overflow-y: scroll;
 }
 
 .modal-contents > div > * {
@@ -343,6 +343,10 @@ header {
 }
 .modal-contents li:last-child {
 	margin-bottom: 0;
+}
+
+.modal-contents a {
+	color: #1DA1F2;
 }
 
 .modal-close {

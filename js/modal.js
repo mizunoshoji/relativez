@@ -108,14 +108,16 @@ $(function() {
         )
       )
       .append($('<label>').attr('for', 'data-selection').text('データソースを選択してくだい。'))
-      .append($('<select>')
-        .attr({
-          id: 'data-selection',
-          name: 'data-selection',
-        })
-        .append($('<option>').attr('value', 'initial_graph').text('日本美術の制度論系 (データ作成者：大原由)'))
-        .append($('<option>').attr('value', 'sample_1').text('サンプル1'))
-        .append($('<option>').attr('value', 'sample_2').text('サンプル2'))
+      .append($('<div>').attr('id', 'select-box-wrapper')
+        .append($('<select>')
+            .attr({
+              id: 'data-selection',
+              name: 'data-selection',
+            })
+            .append($('<option>').attr('value', 'initial_graph').text('日本美術の制度論系 (作成者：大原由)'))
+            .append($('<option>').attr('value', 'sample_1').text('サンプル1'))
+            .append($('<option>').attr('value', 'sample_2').text('サンプル2'))
+        )
       )
       .append($('<button>').addClass('button-component').attr('id', 'show-selected-graph-btn').text('ネットワークグラフ表示'))
     );

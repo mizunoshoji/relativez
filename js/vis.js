@@ -254,6 +254,8 @@ $(function() {
         adjustLayout = 0.25;
       }
 
+      // zoomの初期化
+      d3.select('svg').call(zoom.transform, d3.zoomIdentity);
       initZoom();
 
       // simulation
@@ -791,6 +793,7 @@ $(function() {
         const nodeObjUrl = URL.createObjectURL(blob[0]);
         const linksObjUrl = URL.createObjectURL(blob[1]);
         createGraph(nodeObjUrl, linksObjUrl);
+        $('#mobile-menu-close-btn').click();
       }).catch(function(error){
         console.log(error);
       });

@@ -793,7 +793,9 @@ $(function() {
         const nodeObjUrl = URL.createObjectURL(blob[0]);
         const linksObjUrl = URL.createObjectURL(blob[1]);
         createGraph(nodeObjUrl, linksObjUrl);
-        $('#mobile-menu-close-btn').click();
+        if(document.documentElement.clientWidth <= 980){
+          $('#mobile-menu-close-btn').click();
+        }
       }).catch(function(error){
         console.log(error);
       });

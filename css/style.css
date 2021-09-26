@@ -44,12 +44,16 @@ p {
 }
 
 a {
-	color: #eaeaea;
+	color: #5983ff;
 	text-decoration: none;
 }
 
 a:hover {
-	color: #bfa925;
+	color: #bfa925 !important;
+}
+
+a:visited {
+	color: #5983ff;
 }
 
 .sub-text {
@@ -372,7 +376,7 @@ header {
 	margin-bottom: 0;
 }
 
-.modal-contents a {
+#twitter-link {
 	color: #1DA1F2;
 }
 

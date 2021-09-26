@@ -16,8 +16,26 @@ $(function() {
         hidden: 'hidden',
       })
       .append($('<h1>').text('データソースファイル入力'))
-      .append($('<p>').text('入力されたデータソースファイルに基づいてネットワークグラフを作成します。文献表と引用関係表を選択してください。ファイル形式はカンマ区切り形式(.csv)にしてください。'))
-      .append($('<p>').addClass('sub-text').text('ファイルや個人情報がサーバーに送信、保存されることはありません。'))
+      .append($('<p>').text('入力されたデータソースファイルに基づいてネットワークグラフを作成します。'))
+      .append($('<p>')
+        .text('下記のデータ作成用テンプレートをコピーまたはダウンロードしてからデータを作成してください。'+
+              '(Googleスプレッドシートを使用してコピーを作成するのが簡単です。)'+
+              'データ作成方法については、シート「データ作成マニュアル」を参照してください。'
+        )
+        .append($('<br>'))
+        .append($('<a>')
+          .attr({
+            href: 'https://docs.google.com/spreadsheets/d/1AdNFTfCSotEPVilhd1EvE6poh1fSPZ5TjKZYU9LS318/edit?usp=sharing',
+            target: '_blank',
+            rel: 'noopener noreferrer'
+          })
+          .text('データ作成用テンプレート - relativez_data_template.v01 ')
+        )
+      )
+      .append($('<p>').text(
+          '作成した文献表と引用関係表を選択してください。ファイル形式はカンマ区切り形式(.csv)にしてください。'+
+          'ファイルや個人情報がサーバーに送信、保存されることはありません。'
+      ))
       .append($('<div>').addClass('file-input-box').attr('id', 'nodes-input')
       .append($('<input>').attr({
         type: 'file',
@@ -80,6 +98,7 @@ $(function() {
         .text('relativezにデータを提供していただける方はTwitterのDMでご連絡ください。')
         .append($('<br>'))
         .append($('<a>').attr({
+          id: 'twitter-link',
           href: 'https://twitter.com/relativez_2021',
           target: '_blank',
           rel: 'noopener noreferrer'

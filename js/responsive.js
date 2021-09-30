@@ -1,4 +1,5 @@
 $(function(){
+  'use strict';
   $('#mobile-menu-btn').on('click', function() {
     $('.header-menu').css({
       right: '0',

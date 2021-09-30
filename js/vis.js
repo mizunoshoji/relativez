@@ -1,6 +1,5 @@
-// 'use strict';
-
 $(function() {
+  'use strict';
   var clientWidth, clientHeight, svg, zoom, graphScale, adjustLayout,
       keepedGraphState = '';
 
@@ -258,6 +257,11 @@ $(function() {
       d3.select('svg').call(zoom.transform, d3.zoomIdentity);
       initZoom();
 
+      // SVG link
+      var link = svg.selectAll('.link').data(links);
+      // SVG node
+      var node = svg.selectAll('.node').data(nodes);
+
       // simulation
       var simulation = d3.forceSimulation(nodes)
         .force('link', d3.forceLink().links(links).id(function(n) { return n.node_id }).distance(200))
@@ -287,12 +291,10 @@ $(function() {
         });
       }
 
-      // SVG link
-      link = svg.selectAll('.link').data(links);
 
       link.exit().remove();
 
-      linkEnter = link.enter()
+      var linkEnter = link.enter()
         .append('path')
         .attr('class', 'link')
         .attr('stroke-width', 2)
@@ -303,15 +305,13 @@ $(function() {
 
       link = linkEnter.merge(link);
       
-      // SVG node
-      node = svg.selectAll('.node').data(nodes);
 
       // move update selection nodes to the front
       $('.node').appendTo('#vis > svg > g');
 
       node.exit().remove();
 
-      nodeEnter = node.enter().append('g')
+      var nodeEnter = node.enter().append('g')
         .attr('class', 'node');
 
       nodeEnter.append('circle')
@@ -624,6 +624,10 @@ $(function() {
     })
   }
 
+    $('#header-menu-donate').on('click', function(){
+      $('#donate-link')[0].click();
+    })
+
     // タブリスト
     $('.tabs a').on('click', function(){
       $(this).preventDefault();
@@ -800,4 +804,4 @@ $(function() {
         console.log(error);
       });
     }
-})
+});

@@ -18,11 +18,7 @@ const modal = $(function () {
         hidden: 'hidden'
       })
       .append($('<h1>').text('データソースファイル入力'))
-      .append(
-        $('<p>').text(
-          '入力されたデータソースファイルに基づいてネットワークグラフを作成します。'
-        )
-      )
+      .append($('<p>').text('入力されたデータソースファイルに基づいてネットワークグラフを作成します。'))
       .append(
         $('<p>')
           .text(
@@ -89,12 +85,7 @@ const modal = $(function () {
           .append($('<p>').addClass('file-data'))
           .append($('<p>').addClass('error-msg-box'))
       )
-      .append(
-        $('<button>')
-          .addClass('button-component')
-          .attr('id', 'create-graph-btn')
-          .text('ネットワークグラフ作成')
-      )
+      .append($('<button>').addClass('button-component').attr('id', 'create-graph-btn').text('ネットワークグラフ作成'))
   )
 
   // About
@@ -105,22 +96,12 @@ const modal = $(function () {
         hidden: 'hidden'
       })
       .append($('<h1>').text('About'))
-      .append(
-        $('<p>').text(
-          'relativezは、文献の引用ネットワークを可視化するWebアプリケーションです。'
-        )
-      )
+      .append($('<p>').text('relativezは、文献の引用ネットワークを可視化するWebアプリケーションです。'))
       .append($('<p>').text('目的は下記の3点を達成することです。'))
       .append(
         $('<ul>')
-          .append(
-            $('<li>').text(
-              '文献同士の関係を視覚化することで文脈が把握しやすくなること'
-            )
-          )
-          .append(
-            $('<li>').text('情報量が増えたときに全体をイメージしやすくすること')
-          )
+          .append($('<li>').text('文献同士の関係を視覚化することで文脈が把握しやすくなること'))
+          .append($('<li>').text('情報量が増えたときに全体をイメージしやすくすること'))
           .append($('<li>').text('研究に必要な文献情報を整理できること'))
       )
       .append(
@@ -140,9 +121,7 @@ const modal = $(function () {
       )
       .append(
         $('<p>')
-          .text(
-            'relativezにデータを提供していただける方はTwitterのDMでご連絡ください。'
-          )
+          .text('relativezにデータを提供していただける方はTwitterのDMでご連絡ください。')
           .append($('<br>'))
           .append(
             $('<a>')
@@ -181,30 +160,20 @@ const modal = $(function () {
       )
       .append(
         $('<ul>')
-          .append(
-            $('<li>').text(
-              '本アプリケーションの利用の結果生じた損害について、一切責任を負いません。'
-            )
-          )
+          .append($('<li>').text('本アプリケーションの利用の結果生じた損害について、一切責任を負いません。'))
           .append(
             $('<li>').text(
               'コンテンツとして提供する全ての文献情報、画像等について、内容の合法性・正確性・安全性等、あらゆる点にお' +
                 'いて保証しません。本アプリケーションはこれらの情報をご利用者様が利用することによって生じたいかなる損害に対しても一切責任を負いません。'
             )
           )
-          .append(
-            $('<li>').text('利用者同士のトラブルには、一切介入致しません。')
-          )
+          .append($('<li>').text('利用者同士のトラブルには、一切介入致しません。'))
           .append(
             $('<li>').text(
               'ご利用者様の適用される法令に照らして、本アプリケーションの利用が合法であることを保証しません。'
             )
           )
-          .append(
-            $('<li>').text(
-              'リンクをしている外部サイトについては、何ら保証しません。'
-            )
-          )
+          .append($('<li>').text('リンクをしている外部サイトについては、何ら保証しません。'))
           .append(
             $('<li>').text(
               '本アプリケーションは、ご利用者様が本アプリケーションそのものおよびそのコンテンツを外部で2次利用した場合、' +
@@ -218,11 +187,7 @@ const modal = $(function () {
                 'がありますが、そのことによって生じた損害について一切責任を負いません。'
             )
           )
-          .append(
-            $('<li>').text(
-              '事前の予告無く、アプリケーションの提供を中止する可能性があります。'
-            )
-          )
+          .append($('<li>').text('事前の予告無く、アプリケーションの提供を中止する可能性があります。'))
       )
   )
 
@@ -239,34 +204,19 @@ const modal = $(function () {
           '選択されたデータソースに基づくネットワークグラフを表示します。relativezは以下のデータソースを提供しています。'
         )
       )
-      .append(
-        $('<label>')
-          .attr('for', 'data-selection')
-          .text('データソースを選択してくだい。')
-      )
+      .append($('<label>').attr('for', 'data-selection').text('データソースを選択してくだい。'))
       .append(
         $('<div>')
           .attr('id', 'select-box-wrapper')
           .append(
-            $('<select>')
-              .attr({
-                id: 'data-selection',
-                name: 'data-selection'
-              })
-              .append(
-                $('<option>')
-                  .attr('value', 'initial_graph')
-                  .text('日本美術の制度論系 (作成者：大原由)')
-              )
-              .append($('<option>').attr('value', 'sample_1').text('サンプル1'))
-              .append($('<option>').attr('value', 'sample_2').text('サンプル2'))
+            $('<select>').attr({
+              id: 'data-selection',
+              name: 'data-selection'
+            })
           )
       )
       .append(
-        $('<button>')
-          .addClass('button-component')
-          .attr('id', 'show-selected-graph-btn')
-          .text('ネットワークグラフ表示')
+        $('<button>').addClass('button-component').attr('id', 'show-selected-graph-btn').text('ネットワークグラフ表示')
       )
   )
 

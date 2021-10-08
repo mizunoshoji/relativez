@@ -6,7 +6,9 @@
   "scripts": {
     "format": "npx prettier index.html ./css/**.css ./js/**js --write",
     "lint": "npx eslint ./js/**.js --fix",
-    "fix": "npm run format && npm run lint"
+    "fix": "npm run format && npm run lint",
+    "build": "browserify ./js/vis.js -t [ babelify --presets [ @babel/preset-env ] ] -o ./app.js",
+    "jsdoc": "npx jsdoc ./js"
   },
   "repository": {
     "type": "git",
@@ -34,6 +36,7 @@
     "eslint-plugin-import": "^2.24.2",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^5.1.0",
+    "jsdoc": "^3.6.7",
     "prettier": "^2.4.1"
   }
 }

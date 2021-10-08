@@ -33,6 +33,7 @@
     display: block;
     margin-bottom: 16px;
   }
+
   .header-menu li:last-child {
     margin-bottom: 0;
   }
@@ -41,12 +42,12 @@
     left: -320px;
   }
 
-  .list-button-box label {
-    background-color: none;
-  }
-
   #side-bar-switcher-hide {
     display: none;
+  }
+
+  .list-button-box label {
+    background-color: none;
   }
 
   #side-bar-switcher-show {

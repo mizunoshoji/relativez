@@ -1,4 +1,32 @@
-/* eslint-env jquery */
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: vis.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: vis.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/* eslint-env jquery */
 'use strict'
 window.$ = window.jQuery = require('jquery')
 // eslint-disable-next-line no-unused-vars
@@ -121,7 +149,7 @@ function showSelectedGraph() {
       const nodeObjUrl = URL.createObjectURL(blob[0])
       const linksObjUrl = URL.createObjectURL(blob[1])
       createGraph(nodeObjUrl, linksObjUrl)
-      if (document.documentElement.clientWidth <= 980) {
+      if (document.documentElement.clientWidth &lt;= 980) {
         $('#mobile-menu-close-btn').trigger('click')
       }
     })
@@ -149,8 +177,8 @@ function onChangeFileInput() {
     $('.modal')
       .find('#' + inputId)
       .children('.file-data')
-      .append($('<div></div>').text(`ファイル名 : ${file.name}`))
-      .append($('<div></div>').text(`ファイルサイズ : ${returnFileSize(file.size)}`))
+      .append($('&lt;div>&lt;/div>').text(`ファイル名 : ${file.name}`))
+      .append($('&lt;div>&lt;/div>').text(`ファイルサイズ : ${returnFileSize(file.size)}`))
   } else {
     const errorMsg = '入力不可能なファイル形式です。カンマ区切り形式のファイル(.csv)を選択してください。'
     $('.modal')
@@ -166,9 +194,9 @@ function onChangeFileInput() {
  * @return {String} KBまたはMB単位に変換されたファイルサイズ
  */
 function returnFileSize(number) {
-  if (number < 1024) {
+  if (number &lt; 1024) {
     return `${number} bytes`
-  } else if (number >= 1024 && number < 1048576) {
+  } else if (number >= 1024 &amp;&amp; number &lt; 1048576) {
     return `${(number / 1024).toFixed(1)} KB`
   } else if (number >= 1048576) {
     return `${(number / 1048576).toFixed(1)} MB`
@@ -258,10 +286,10 @@ function createGraph(nodesObjUrl, linksObjUrl) {
       nodes = addCharToYear(nodes)
 
       // グラフのスケールと表示位置の調整用
-      if (nodes.length <= 100) {
+      if (nodes.length &lt;= 100) {
         graphScale = '1'
         adjustLayout = 0
-      } else if (nodes.length <= 550) {
+      } else if (nodes.length &lt;= 550) {
         graphScale = '.5'
         adjustLayout = 0.25
       }
@@ -398,18 +426,18 @@ function createGraph(nodesObjUrl, linksObjUrl) {
 
         // 関連リンク線をハイライト
         link.style('stroke', function (l) {
-          if (d === l.source && propCitationCheckBox) {
+          if (d === l.source &amp;&amp; propCitationCheckBox) {
             return COLOR.CITATION
-          } else if (d === l.target && propCitedByChechBox) {
+          } else if (d === l.target &amp;&amp; propCitedByChechBox) {
             return COLOR.CITEDBY
           } else {
             return COLOR.LINK_INIT
           }
         })
         link.attr('marker-end', function (l) {
-          if (d === l.source && propCitationCheckBox) {
+          if (d === l.source &amp;&amp; propCitationCheckBox) {
             return 'url(#arrow-citation)'
-          } else if (d === l.target && propCitedByChechBox) {
+          } else if (d === l.target &amp;&amp; propCitedByChechBox) {
             return 'url(#arrow-cited-by)'
           } else {
             return 'url(#arrow)'
@@ -577,7 +605,7 @@ function validateData(nodes, links) {
       `)
   }
 
-  for (let i = 0; i < nodes.length; i++) {
+  for (let i = 0; i &lt; nodes.length; i++) {
     if (!rules.node_id.regexp.test(nodes[i].node_id)) {
       nodesErrorMessages.push(`${i + 1} 行目のデータ : ${rules.node_id.error}`)
     }
@@ -616,7 +644,7 @@ function validateData(nodes, links) {
     }
   }
 
-  for (let i = 0; i < links.length; i++) {
+  for (let i = 0; i &lt; links.length; i++) {
     if (!rules.source.regexp.test(links[i].source)) {
       linksErrorMessages.push(`${i + 1} 行目のデータ：' ${rules.source.error}`)
     }
@@ -627,10 +655,10 @@ function validateData(nodes, links) {
 
   if (nodesErrorMessages.length || linksErrorMessages.length) {
     nodesErrorMessages.forEach(function (e) {
-      $('#nodes-input .error-msg-box').append($('<p></p>').text(e))
+      $('#nodes-input .error-msg-box').append($('&lt;p>&lt;/p>').text(e))
     })
     linksErrorMessages.forEach(function (e) {
-      $('#links-input .error-msg-box').append($('<p></p>').text(e))
+      $('#links-input .error-msg-box').append($('&lt;p>&lt;/p>').text(e))
     })
     throw new Error('validation error.')
   }
@@ -638,8 +666,8 @@ function validateData(nodes, links) {
 
 /**
  * 著者と発行年が同一の文献があれば発行年にアルファベットを付与したデータを追加する。
- * @param {Object} nodes 文献データ
- * @return {Object} year_added_charを追加した文献データ。
+ * @param {Object} nodes
+ * @return {Object} year_added_charを追加したnodesオブジェクト。
  * @example
  * author: "山田太郎", year: "1990", year_added_char: "1990 a"
  * author: "山田太郎", year: "1990", year_added_char: "1990 b"
@@ -650,17 +678,17 @@ function addCharToYear(nodes) {
   let isCheckedNode = false
   const ALPHABETCHAR = []
 
-  for (let i = 'a'.charCodeAt(0); i <= 'z'.charCodeAt(0); i++) {
+  for (let i = 'a'.charCodeAt(0); i &lt;= 'z'.charCodeAt(0); i++) {
     ALPHABETCHAR.push(String.fromCharCode(i))
   }
 
-  for (let i = 0; i < nodes.length; i++) {
+  for (let i = 0; i &lt; nodes.length; i++) {
     const nodeId = nodes[i].node_id
     const currentAuthor = nodes[i].author
     const currentYear = nodes[i].year
     sameAuthorYearNodes = []
 
-    for (let j = 0; j < sameAuthorYearNodesSets.length; j++) {
+    for (let j = 0; j &lt; sameAuthorYearNodesSets.length; j++) {
       if (sameAuthorYearNodesSets[j].includes(nodeId)) {
         isCheckedNode = true
       } else {
@@ -672,7 +700,7 @@ function addCharToYear(nodes) {
       continue
     } else {
       nodes.forEach(function (node) {
-        if (node.author === currentAuthor && node.year === currentYear) {
+        if (node.author === currentAuthor &amp;&amp; node.year === currentYear) {
           sameAuthorYearNodes.push(node.node_id)
         }
       })
@@ -683,8 +711,8 @@ function addCharToYear(nodes) {
     }
   }
 
-  for (let i = 0; i < sameAuthorYearNodesSets.length; i++) {
-    for (let j = 0; j < sameAuthorYearNodesSets[i].length && j < 26; j++) {
+  for (let i = 0; i &lt; sameAuthorYearNodesSets.length; i++) {
+    for (let j = 0; j &lt; sameAuthorYearNodesSets[i].length &amp;&amp; j &lt; 26; j++) {
       const nodeAddChar = nodes.find((node) => node.node_id === sameAuthorYearNodesSets[i][j])
       nodeAddChar.year_added_char = nodeAddChar.year + ' ' + ALPHABETCHAR[j]
     }
@@ -762,30 +790,30 @@ function resetGraphStyle(node, link) {
  * @return textListItem 文献リストアイテム
  */
 function createListItems(node) {
-  const textListItem = $('<li></li>')
-    .append($('<div></div>').addClass('text-title').text(node.title))
-    .append($('<div></div>').text(`著者 : ${node.author}`))
-    .append($('<div></div>').text(`発行年 : ${node.year}`))
+  const textListItem = $('&lt;li>&lt;/li>')
+    .append($('&lt;div>&lt;/div>').addClass('text-title').text(node.title))
+    .append($('&lt;div>&lt;/div>').text(`著者 : ${node.author}`))
+    .append($('&lt;div>&lt;/div>').text(`発行年 : ${node.year}`))
 
   if (node.original_work) {
-    textListItem.append($('<div></div>').text(`原著 : ${node.original_work}`))
+    textListItem.append($('&lt;div>&lt;/div>').text(`原著 : ${node.original_work}`))
   }
   if (node.translator) {
-    textListItem.append($('<div></div>').text(`翻訳者 : ${node.translator}`))
+    textListItem.append($('&lt;div>&lt;/div>').text(`翻訳者 : ${node.translator}`))
   }
   if (node.publication_detail) {
-    textListItem.append($('<div></div>').text(`掲載元 : ${node.publication_detail}`))
+    textListItem.append($('&lt;div>&lt;/div>').text(`掲載元 : ${node.publication_detail}`))
   }
   if (node.publisher) {
-    textListItem.append($('<div></div>').text(`発行所 : ${node.publisher}`))
+    textListItem.append($('&lt;div>&lt;/div>').text(`発行所 : ${node.publisher}`))
   }
   if (node.link_url_1 || node.link_url_2 || node.link_url_3) {
-    textListItem.append($('<div>オンラインリンク : </div>').append($('<ul></ul>')))
+    textListItem.append($('&lt;div>オンラインリンク : &lt;/div>').append($('&lt;ul>&lt;/ul>')))
     if (node.link_url_1.match(/^https?:\/\//)) {
-      if (node.link_text_1 && node.link_url_1) {
+      if (node.link_text_1 &amp;&amp; node.link_url_1) {
         textListItem.find('ul').append(
-          $('<li></li>').append(
-            $('<a></a>')
+          $('&lt;li>&lt;/li>').append(
+            $('&lt;a>&lt;/a>')
               .attr({
                 href: node.link_url_1,
                 target: '_blank',
@@ -796,8 +824,8 @@ function createListItems(node) {
         )
       } else if (node.link_url_1) {
         textListItem.find('ul').append(
-          $('<li></li>').append(
-            $('<a></a>')
+          $('&lt;li>&lt;/li>').append(
+            $('&lt;a>&lt;/a>')
               .attr({
                 href: node.link_url_1,
                 target: '_blank',
@@ -809,10 +837,10 @@ function createListItems(node) {
       }
     }
     if (node.link_url_2.match(/^https?:\/\//)) {
-      if (node.link_text_2 && node.link_url_2) {
+      if (node.link_text_2 &amp;&amp; node.link_url_2) {
         textListItem.find('ul').append(
-          $('<li></li>').append(
-            $('<a></a>')
+          $('&lt;li>&lt;/li>').append(
+            $('&lt;a>&lt;/a>')
               .attr({
                 href: node.link_url_2,
                 target: '_blank',
@@ -823,8 +851,8 @@ function createListItems(node) {
         )
       } else if (node.link_url_2) {
         textListItem.find('ul').append(
-          $('<li></li>').append(
-            $('<a></a>')
+          $('&lt;li>&lt;/li>').append(
+            $('&lt;a>&lt;/a>')
               .attr({
                 href: node.link_url_2,
                 target: '_blank',
@@ -836,10 +864,10 @@ function createListItems(node) {
       }
     }
     if (node.link_url_3.match(/^https?:\/\//)) {
-      if (node.link_text_3 && node.link_url_3) {
+      if (node.link_text_3 &amp;&amp; node.link_url_3) {
         textListItem.find('ul').append(
-          $('<li></li>').append(
-            $('<a></a>')
+          $('&lt;li>&lt;/li>').append(
+            $('&lt;a>&lt;/a>')
               .attr({
                 href: node.link_url_3,
                 target: '_blank',
@@ -850,8 +878,8 @@ function createListItems(node) {
         )
       } else if (node.link_url_3) {
         textListItem.find('ul').append(
-          $('<li></li>').append(
-            $('<a></a>')
+          $('&lt;li>&lt;/li>').append(
+            $('&lt;a>&lt;/a>')
               .attr({
                 href: node.link_url_3,
                 target: '_blank',
@@ -864,7 +892,7 @@ function createListItems(node) {
     }
   }
   if (node.others) {
-    textListItem.append($('<div></div>').text(`その他 : ${node.others}`))
+    textListItem.append($('&lt;div>&lt;/div>').text(`その他 : ${node.others}`))
   }
 
   return textListItem
@@ -877,19 +905,42 @@ function createListItems(node) {
 function createDataOptions(metaDataSelection) {
   $('#data-selection')
     .append(
-      $('<option>')
+      $('&lt;option>')
         .attr('value', 'initial_graph')
         .text(`${metaDataSelection.initial_graph.option_text} (作成者：${metaDataSelection.initial_graph.provider}`)
     )
     .append(
-      $('<option>')
+      $('&lt;option>')
         .attr('value', 'sample_1')
         .text(`${metaDataSelection.sample_1.option_text} (作成者：${metaDataSelection.sample_1.provider}`)
     )
     .append(
-      $('<option>')
+      $('&lt;option>')
         .attr('value', 'sample_2')
         .text(`${metaDataSelection.sample_2.option_text} (作成者：${metaDataSelection.sample_2.provider}`)
     )
 }
 // })
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#addCharToYear">addCharToYear</a></li><li><a href="global.html#createDataOptions">createDataOptions</a></li><li><a href="global.html#createGraph">createGraph</a></li><li><a href="global.html#createListItems">createListItems</a></li><li><a href="global.html#neighboring">neighboring</a></li><li><a href="global.html#neighboringCitation">neighboringCitation</a></li><li><a href="global.html#neighboringCitedBy">neighboringCitedBy</a></li><li><a href="global.html#onChangeFileInput">onChangeFileInput</a></li><li><a href="global.html#onClickCreateGraph">onClickCreateGraph</a></li><li><a href="global.html#returnFileSize">returnFileSize</a></li><li><a href="global.html#showSelectedGraph">showSelectedGraph</a></li><li><a href="global.html#validateData">validateData</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Sat Oct 09 2021 01:22:38 GMT+0900 (日本標準時)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

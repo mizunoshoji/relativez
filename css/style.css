@@ -1,18 +1,20 @@
 /**
  * 目次
- *
- * Base
- *
- * Layout
- * header 
- * vis-column
- * list-column
- * others
- *
+ * # Base
+ * # Header
+ * # vis-column
+ * # list-column
+ * ## 選択中の文献
+ * ## 引用・被引用文献リスト
+ * # Modal
+ * ## Modal Base
+ * ## データソース入力
+ * ## データソース選択
+ * # Others
  */
 
 /**
- * #Base
+ * # Base
  */
 * {
   box-sizing: border-box;
@@ -20,8 +22,7 @@
 
 body {
   background-color: #222;
-  font-family: Helvetica, Arial, Hiragino Kaku Gothic ProN, Hiragino Sans,
-    Meiryo, sans-serif;
+  font-family: Helvetica, Arial, Hiragino Kaku Gothic ProN, Hiragino Sans, Meiryo, sans-serif;
   font-size: 16px;
   color: #eaeaea;
 }
@@ -61,10 +62,6 @@ a:visited {
   color: #5983ff;
 }
 
-.sub-text {
-  font-size: 14px;
-}
-
 select {
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -74,17 +71,30 @@ select {
   background: transparent;
 }
 
-/**
- * #Layout 
- */
 #desktop-app {
   position: relative;
   width: 100vw;
   height: 100vh;
 }
 
+.button-component {
+  min-width: 80px;
+  padding: 4px 12px;
+  color: #bfa925;
+  background-color: #222;
+  border: 1px solid #bfa925;
+  border-radius: 30px;
+  font-size: 14px;
+}
+
+.button-component:hover {
+  color: #222;
+  background-color: #bfa925;
+  font-weight: bold;
+}
+
 /**
- * #header 
+ * # Header
  */
 header {
   position: fixed;
@@ -113,8 +123,30 @@ header {
   margin-right: 0;
 }
 
+.list-button-box {
+  margin-bottom: 8px;
+}
+
+.list-button-box div {
+  display: inline-block;
+  font-size: 14px;
+  margin-left: 8px;
+}
+
+.list-button-box label {
+  background-color: #222;
+}
+
+#checkbox-label-cited-by {
+  color: #bfa925;
+}
+
+#checkbox-label-citaion {
+  color: #c44caa;
+}
+
 /**
- * #vis-column 
+ * # vis-column
  */
 #vis svg {
   width: 100vw;
@@ -122,7 +154,7 @@ header {
 }
 
 /**
- * #list-column
+ * # list-column
  */
 .list-column {
   display: flex;
@@ -135,39 +167,29 @@ header {
   padding-top: 70px;
 }
 
-.list-items-box {
-  display: flex;
-  overflow-y: hidden;
+.side-bar-switcher {
+  position: absolute;
+  right: -28px;
+  width: 24px;
+  height: 30px;
+  padding-bottom: 3px;
+  background-color: #000000cc;
 }
 
-.list-container {
-  border: 1px solid #444;
-}
-
-.list-items {
-  overflow-y: scroll;
-  width: 100%;
-  padding: 12px;
-  color: #aaa;
-  line-height: 1.8;
-  font-size: 14px;
-  word-break: break-all;
-}
-
-.list-items a {
-  color: #5983ff;
-}
-
-.list-items a:hover {
-  color: #bfa925;
-}
-
-/* 選択中の文献 */
+/* ## 選択中の文献 */
 .list-current-item {
   margin-bottom: 16px;
   border: 1px solid #4169e1;
   border-radius: 10px;
   background-color: #000000cc;
+}
+
+#reset-selected-node {
+  position: relative;
+  float: right;
+  top: 5px;
+  right: 12px;
+  color: #eaeaea;
 }
 
 .list-current-label {
@@ -180,16 +202,26 @@ header {
   max-height: 25vh;
 }
 
-#reset-selected-node {
-  position: relative;
-  float: right;
-  top: 5px;
-  right: 12px;
-  color: #eaeaea;
+.list-items {
+  overflow-y: scroll;
+  width: 100%;
+  padding: 12px;
+  color: #aaa;
+  line-height: 1.8;
+  font-size: 14px;
+  word-break: break-all;
 }
 
 .list-items li div {
   padding-bottom: 6px;
+}
+
+.list-items a {
+  color: #5983ff;
+}
+
+.list-items a:hover {
+  color: #bfa925;
 }
 
 .text-title {
@@ -198,15 +230,7 @@ header {
   color: #eaeaea;
 }
 
-.list-button-box {
-  margin-bottom: 8px;
-}
-
-.list-button-box label {
-  background-color: #222;
-}
-
-/* 引用文献・被引用文献リスト */
+/* ## 引用・被引用文献リスト */
 .tabs-list li {
   display: inline-block;
   padding: 10px 10px 0px 10px;
@@ -224,67 +248,6 @@ header {
   color: #c44caa;
 }
 
-.tab {
-  display: none;
-  max-height: 55vh;
-  background-color: #000000cc;
-}
-
-/* スクロールバー */
-.list-items::-webkit-scrollbar {
-  width: 10px;
-}
-
-.list-items::-webkit-scrollbar-track {
-  background-color: #222;
-  border-radius: 10px;
-  margin: 10px 0px;
-}
-
-.list-items::-webkit-scrollbar-thumb {
-  background-color: #666;
-  border-radius: 10px;
-  margin: 10px 0px;
-}
-
-.modal::-webkit-scrollbar {
-  width: 10px;
-}
-
-.modal::-webkit-scrollbar-track {
-  background-color: #222;
-  border-radius: 10px;
-  margin: 10px 0px;
-}
-
-.modal::-webkit-scrollbar-thumb {
-  background-color: #666;
-  border-radius: 10px;
-  margin: 10px 0px;
-}
-
-.tab.list-items > li {
-  margin-bottom: 20px;
-}
-.tab.list-items > li:last-child {
-  margin-bottom: 0;
-}
-
-/* When active state */
-.active {
-  display: block;
-}
-
-#tab-cited-by {
-  border: solid #bfa925 1px;
-  border-radius: 0px 10px 10px 10px;
-}
-
-#tab-citation {
-  border: solid #c44caa 1px;
-  border-radius: 10px;
-}
-
 #tabs-list-cited-by.active {
   position: relative;
   top: 1px;
@@ -299,31 +262,41 @@ header {
   border-bottom: 2px solid #222;
 }
 
-.side-bar-switcher {
-  position: absolute;
-  right: -28px;
-  width: 24px;
-  height: 30px;
-  padding-bottom: 3px;
+.list-items-box {
+  display: flex;
+  overflow-y: hidden;
+}
+
+.tab {
+  display: none;
+  max-height: 55vh;
   background-color: #000000cc;
 }
 
-/* チェックボックス */
-.list-button-box div {
-  display: inline-block;
-  font-size: 14px;
-  margin-left: 8px;
+.tab.list-items > li {
+  margin-bottom: 20px;
 }
 
-.checkbox-label-cited-by {
-  color: #bfa925;
+.tab.list-items > li:last-child {
+  margin-bottom: 0;
 }
 
-.checkbox-label-citaion {
-  color: #c44caa;
+.active {
+  display: block;
 }
 
-/* モーダルウィンドウ　ファイル選択 */
+#tab-cited-by {
+  border: solid #bfa925 1px;
+  border-radius: 0px 10px 10px 10px;
+}
+
+#tab-citation {
+  border: solid #c44caa 1px;
+  border-radius: 10px;
+}
+
+/* # Modal */
+/* ## Modal Base */
 .filter {
   position: absolute;
   z-index: 998;
@@ -380,10 +353,6 @@ header {
   margin-bottom: 0;
 }
 
-#twitter-link {
-  color: #1da1f2;
-}
-
 .modal-close {
   float: right;
 }
@@ -392,6 +361,7 @@ header {
   color: #eaeaea;
 }
 
+/* ## データソース入力 */
 .file-select-btn {
   position: relative;
   top: -2px;
@@ -407,26 +377,11 @@ header {
   margin-right: 8px;
 }
 
-.button-component {
-  min-width: 80px;
-  padding: 4px 12px;
-  color: #bfa925;
-  background-color: #222;
-  border: 1px solid #bfa925;
-  border-radius: 30px;
-  font-size: 14px;
-}
-
-.button-component:hover {
-  color: #222;
-  background-color: #bfa925;
-  font-weight: bold;
-}
-
 .file-selector {
   display: none;
 }
 
+/* ## データソース選択 */
 #modal-contents-file-select label {
   display: block;
   margin-bottom: 16px;
@@ -442,6 +397,7 @@ header {
   border-radius: 10px;
 }
 
+/* セレクトボックス 下矢印 */
 #select-box-wrapper::after {
   content: '';
   position: relative;
@@ -453,18 +409,13 @@ header {
   border-top: 2px solid #cacaca;
   border-left: 2px solid #cacaca;
   transform: translateY(-50%) rotate(-135deg);
-  /* font-size: 20px; */
   pointer-events: none;
 }
 
-/* エラーメッセージ */
-.error-msg-box {
-  color: rgb(193, 81, 81);
-}
-
 /**
- * #others 
+ * # Others 
  */
+/* ツールチップ */
 .tooltip {
   position: absolute;
   padding: 2px;
@@ -473,4 +424,47 @@ header {
   background: rgba(255, 255, 255, 0.81);
   pointer-events: none;
   white-space: nowrap;
+}
+
+/* スクロールバー */
+.list-items::-webkit-scrollbar {
+  width: 10px;
+}
+
+.list-items::-webkit-scrollbar-track {
+  background-color: #222;
+  border-radius: 10px;
+  margin: 10px 0px;
+}
+
+.list-items::-webkit-scrollbar-thumb {
+  background-color: #666;
+  border-radius: 10px;
+  margin: 10px 0px;
+}
+
+.modal::-webkit-scrollbar {
+  width: 10px;
+}
+
+.modal::-webkit-scrollbar-track {
+  background-color: #222;
+  border-radius: 10px;
+  margin: 10px 0px;
+}
+
+.modal::-webkit-scrollbar-thumb {
+  background-color: #666;
+  border-radius: 10px;
+  margin: 10px 0px;
+}
+
+/* Twitterリンク文字列 */
+#twitter-link {
+  color: #1da1f2;
+}
+
+/* エラーメッセージ */
+.error-msg-box {
+  color: rgb(193, 81, 81);
 }

@@ -489,21 +489,18 @@ $(function () {
 
         /**
          * 2つのnodeが隣接するか調べる
-         * @global
          */
         function neighboring(a, b) {
           return linkedByIndex[a.index + ',' + b.index] || linkedByIndex[b.index + ',' + a.index]
         }
         /**
          * 2つの隣接するnodeが引用関係にあるか調べる
-         * @global
          */
         function neighboringCitation(a, b) {
           return linkedByIndex[a.index + ',' + b.index]
         }
         /**
          * 2つの隣接するnodeが被引用関係にあるか調べる
-         * @global
          */
         function neighboringCitedBy(a, b) {
           return linkedByIndex[b.index + ',' + a.index]
@@ -530,32 +527,32 @@ $(function () {
         error: 'node_idは数値で入力してください。'
       },
       title: {
-        regexp: /^.{0,140}$/,
-        error: 'title(文献名)は140文字以内で入力してください。'
+        regexp: /^.{0,500}$/,
+        error: 'title(文献名)は500文字以内で入力してください。'
       },
       author: {
-        regexp: /^.{0,40}$/,
-        error: 'author(著者)は40文字以内で入力してください。'
+        regexp: /^.{0,200}$/,
+        error: 'author(著者)は200文字以内で入力してください。'
       },
       year: {
         regexp: /^.{0,4}$/,
         error: 'year(発行年)は4文字以内で入力してください。'
       },
       translator: {
-        regexp: /^.{0,140}$/,
-        error: 'translator(翻訳者)は140文字以内で入力してください。'
+        regexp: /^.{0,200}$/,
+        error: 'translator(翻訳者)は200文字以内で入力してください。'
       },
       original_work: {
-        regexp: /^.{0,170}$/,
-        error: 'original_work(原著)は170文字以内で入力してください。'
+        regexp: /^.{0,500}$/,
+        error: 'original_work(原著)は500文字以内で入力してください。'
       },
       publisher: {
-        regexp: /^.{0,140}$/,
-        error: 'publisher(発行所)は140文字以内で入力してください。'
+        regexp: /^.{0,200}$/,
+        error: 'publisher(発行所)は200文字以内で入力してください。'
       },
       publication_detail: {
-        regexp: /^.{0,140}$/,
-        error: 'publication_detail(掲載元)は140文字以内で入力してください。'
+        regexp: /^.{0,500}$/,
+        error: 'publication_detail(掲載元)は500文字以内で入力してください。'
       },
       link_text_1: {
         regexp: /^.{0,140}$/,

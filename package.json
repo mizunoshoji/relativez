@@ -7,7 +7,7 @@
     "format": "npx prettier index.html ./css/**.css ./js/**js --write",
     "lint": "npx eslint ./js/**.js --fix",
     "fix": "npm run format && npm run lint",
-    "build": "browserify ./js/vis.js -t [ babelify --presets [ @babel/preset-env ] ] -o ./app.js",
+    "build": "browserify ./js/vis.js -t [ babelify --presets [ @babel/preset-env ] ] -o ./app.js ; npx jsdoc ./js",
     "jsdoc": "npx jsdoc ./js"
   },
   "repository": {

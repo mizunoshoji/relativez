@@ -76,6 +76,9 @@ relativezは今後の運営や開発等の費用を募っています。関心�
 ### 2021.10.10 Ver 1.0
 - Published
 
+## License
+MIT
+
 ## 開発者向けメモ
 
 グラフ作成に[D3.js](https://d3js.org/)を利用していますが`package.json`では管理されていません。

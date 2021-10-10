@@ -1,0 +1,23 @@
+{
+  "initial_graph": {
+    "option_text": "日本美術の制度論系",
+    "nodes_path": "data/initial_graph_nodes.csv",
+    "links_path": "data/initial_graph_links.csv",
+    "date_added": "2021/09/27",
+    "provider": "大原由"
+  },
+  "sample_1": {
+    "option_text": "サンプル1",
+    "nodes_path": "data/sample-01 - 文献表.csv",
+    "links_path": "data/sample-01 - 引用関係表.csv",
+    "date_added": "2021/09/25",
+    "provider": "データ提供者A"
+  },
+  "sample_2": {
+    "option_text": "サンプル2",
+    "nodes_path": "data/sample-02 - 文献表.csv",
+    "links_path": "data/sample-02 - 引用関係表.csv",
+    "date_added": "2021/09/26",
+    "provider": "データ提供者B"
+  }
+}

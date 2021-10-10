@@ -1,0 +1,470 @@
+/**
+ * 目次
+ * # Base
+ * # Header
+ * # vis-column
+ * # list-column
+ * ## 選択中の文献
+ * ## 引用・被引用文献リスト
+ * # Modal
+ * ## Modal Base
+ * ## データソース入力
+ * ## データソース選択
+ * # Others
+ */
+
+/**
+ * # Base
+ */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #222;
+  font-family: Helvetica, Arial, Hiragino Kaku Gothic ProN, Hiragino Sans, Meiryo, sans-serif;
+  font-size: 16px;
+  color: #eaeaea;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+p {
+  margin: 0;
+}
+
+button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  padding: 0;
+  appearance: none;
+}
+
+p {
+  line-height: 1.8;
+}
+
+a {
+  color: #5983ff;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #bfa925 !important;
+}
+
+a:visited {
+  color: #5983ff;
+}
+
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border: none;
+  outline: none;
+  background: transparent;
+}
+
+#desktop-app {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+}
+
+.button-component {
+  min-width: 80px;
+  padding: 4px 12px;
+  color: #bfa925;
+  background-color: #222;
+  border: 1px solid #bfa925;
+  border-radius: 30px;
+  font-size: 14px;
+}
+
+.button-component:hover {
+  color: #222;
+  background-color: #bfa925;
+  font-weight: bold;
+}
+
+/**
+ * # Header
+ */
+header {
+  position: fixed;
+  z-index: 999;
+  width: 100%;
+  padding: 16px 20px;
+  pointer-events: none;
+}
+
+#site-logo {
+  float: left;
+}
+
+.header-menu {
+  float: right;
+}
+
+.header-menu li {
+  display: inline-block;
+  margin-right: 16px;
+  padding: 4px 0;
+  pointer-events: auto;
+}
+
+.header-menu li:last-child {
+  margin-right: 0;
+}
+
+.list-button-box {
+  margin-bottom: 8px;
+}
+
+.list-button-box div {
+  display: inline-block;
+  font-size: 14px;
+  margin-left: 8px;
+}
+
+.list-button-box label {
+  background-color: #222;
+}
+
+#checkbox-label-cited-by {
+  color: #bfa925;
+}
+
+#checkbox-label-citaion {
+  color: #c44caa;
+}
+
+/**
+ * # vis-column
+ */
+#vis svg {
+  width: 100vw;
+  height: 100vh;
+}
+
+/**
+ * # list-column
+ */
+.list-column {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  z-index: 997;
+  left: 16px;
+  width: 320px;
+  height: 100%;
+  padding-top: 70px;
+}
+
+.side-bar-switcher {
+  position: absolute;
+  right: -28px;
+  width: 24px;
+  height: 30px;
+  padding-bottom: 3px;
+  background-color: #000000cc;
+}
+
+/* ## 選択中の文献 */
+.list-current-item {
+  margin-bottom: 16px;
+  border: 1px solid #4169e1;
+  border-radius: 10px;
+  background-color: #000000cc;
+}
+
+#reset-selected-node {
+  position: relative;
+  float: right;
+  top: 5px;
+  right: 12px;
+  color: #eaeaea;
+}
+
+.list-current-label {
+  padding: 12px 12px 0px;
+  font-size: 14px;
+  color: #5983ff;
+}
+
+#list-items-current {
+  max-height: 25vh;
+}
+
+.list-items {
+  overflow-y: scroll;
+  width: 100%;
+  padding: 12px;
+  color: #aaa;
+  line-height: 1.8;
+  font-size: 14px;
+  word-break: break-all;
+}
+
+.list-items li div {
+  padding-bottom: 6px;
+}
+
+.list-items a {
+  color: #5983ff;
+}
+
+.list-items a:hover {
+  color: #bfa925;
+}
+
+.text-title {
+  padding: 0;
+  font-size: 16px;
+  color: #eaeaea;
+}
+
+/* ## 引用・被引用文献リスト */
+.tabs-list li {
+  display: inline-block;
+  padding: 10px 10px 0px 10px;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 10px 10px 0px 0px;
+  background-color: #000000cc;
+}
+
+#tabs-list-cited-by {
+  color: #bfa925;
+}
+
+#tabs-list-citation {
+  color: #c44caa;
+}
+
+#tabs-list-cited-by.active {
+  position: relative;
+  top: 1px;
+  border: 1px solid #bfa925;
+  border-bottom: 2px solid #222;
+}
+
+#tabs-list-citation.active {
+  position: relative;
+  top: 1px;
+  border: 1px solid #c44caa;
+  border-bottom: 2px solid #222;
+}
+
+.list-items-box {
+  display: flex;
+  overflow-y: hidden;
+}
+
+.tab {
+  display: none;
+  max-height: 55vh;
+  background-color: #000000cc;
+}
+
+.tab.list-items > li {
+  margin-bottom: 20px;
+}
+
+.tab.list-items > li:last-child {
+  margin-bottom: 0;
+}
+
+.active {
+  display: block;
+}
+
+#tab-cited-by {
+  border: solid #bfa925 1px;
+  border-radius: 0px 10px 10px 10px;
+}
+
+#tab-citation {
+  border: solid #c44caa 1px;
+  border-radius: 10px;
+}
+
+/* # Modal */
+/* ## Modal Base */
+.filter {
+  position: absolute;
+  z-index: 998;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: brightness(30%);
+}
+
+.modal {
+  position: absolute;
+  top: 70px;
+  left: 50%;
+  transform: translate(-50%, 0);
+  z-index: 999;
+  max-width: 700px;
+  max-height: 85vh;
+  padding: 24px;
+  color: #eaeaea;
+  background-color: #222;
+  border: 1px solid #bfa925;
+  border-radius: 10px;
+  overflow-y: scroll;
+}
+
+.modal-contents > div > * {
+  margin-bottom: 24px;
+}
+
+.modal-contents > div > *:last-child {
+  margin-bottom: 0;
+}
+
+.modal-contents h1 {
+  font-size: 24px;
+}
+
+.modal-contents h2 {
+  margin-bottom: 16px;
+  font-size: 20px;
+}
+.modal-contents h3 {
+  margin-bottom: 16px;
+  font-size: 16px;
+  font-weight: normal;
+}
+
+.modal-contents li {
+  margin-bottom: 14px;
+  list-style: inside;
+}
+.modal-contents li:last-child {
+  margin-bottom: 0;
+}
+
+.modal-close {
+  float: right;
+}
+
+.modal-close button {
+  color: #eaeaea;
+}
+
+/* ## データソース入力 */
+.file-select-btn {
+  position: relative;
+  top: -2px;
+  left: -4px;
+  margin-bottom: 8px;
+  padding: 6px 12px;
+  font-size: 14px;
+  background-color: #3353b5;
+  color: #eaeaea;
+}
+
+.file-select-btn img {
+  margin-right: 8px;
+}
+
+.file-selector {
+  display: none;
+}
+
+/* ## データソース選択 */
+#modal-contents-file-select label {
+  display: block;
+  margin-bottom: 16px;
+}
+
+#data-selection {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  color: #fff;
+  background-color: #333;
+  border: solid 2px #3353b5;
+  border-radius: 10px;
+}
+
+/* セレクトボックス 下矢印 */
+#select-box-wrapper::after {
+  content: '';
+  position: relative;
+  float: right;
+  top: -25px;
+  right: 10px;
+  width: 10px;
+  height: 10px;
+  border-top: 2px solid #cacaca;
+  border-left: 2px solid #cacaca;
+  transform: translateY(-50%) rotate(-135deg);
+  pointer-events: none;
+}
+
+/**
+ * # Others 
+ */
+/* ツールチップ */
+.tooltip {
+  position: absolute;
+  padding: 2px;
+  font: 14px sans-serif;
+  color: #222;
+  background: rgba(255, 255, 255, 0.81);
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+/* スクロールバー */
+.list-items::-webkit-scrollbar {
+  width: 10px;
+}
+
+.list-items::-webkit-scrollbar-track {
+  background-color: #222;
+  border-radius: 10px;
+  margin: 10px 0px;
+}
+
+.list-items::-webkit-scrollbar-thumb {
+  background-color: #666;
+  border-radius: 10px;
+  margin: 10px 0px;
+}
+
+.modal::-webkit-scrollbar {
+  width: 10px;
+}
+
+.modal::-webkit-scrollbar-track {
+  background-color: #222;
+  border-radius: 10px;
+  margin: 10px 0px;
+}
+
+.modal::-webkit-scrollbar-thumb {
+  background-color: #666;
+  border-radius: 10px;
+  margin: 10px 0px;
+}
+
+/* Twitterリンク文字列 */
+#twitter-link {
+  color: #1da1f2;
+}
+
+/* エラーメッセージ */
+.error-msg-box {
+  color: rgb(193, 81, 81);
+}

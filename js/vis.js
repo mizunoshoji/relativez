@@ -29,7 +29,8 @@ $(function () {
     CITATION: '#c44caa',
     CITEDBY: '#bfa925',
     WHITE: '#eaeaea',
-    BLUE: '#4169e1'
+    BLUE: '#4169e1',
+    RED: '#ff4500'
   }
 
   const zoom = d3.zoom().scaleExtent([0.1, 20]).on('zoom', handleZoom)
@@ -295,7 +296,7 @@ $(function () {
           )
           .force('charge', d3.forceManyBody().strength(-30))
           .force('center', d3.forceCenter(clientWidth * 0.5, clientHeight * 0.5))
-          .force('collige', d3.forceCollide().radius(80).strength(1).iterations(6))
+          .force('collige', d3.forceCollide().radius(80).strength(1).iterations(4))
           .velocityDecay(0.3)
           .alphaMin(0.15)
           .on('tick', ticked)
@@ -319,7 +320,13 @@ $(function () {
         $('.node').appendTo('#vis > svg > g')
 
         node.exit().remove()
-        const nodeEnter = node.enter().append('g').attr('class', 'node')
+        const nodeEnter = node
+          .enter()
+          .append('g')
+          .attr('class', 'node')
+          .attr('id', function (d) {
+            return 'node-id-' + d.node_id
+          })
         nodeEnter.append('circle').attr('r', '10').attr('fill', COLOR.NODE_INIT).style('z-index', '2')
         nodeEnter
           .append('text')
@@ -402,7 +409,10 @@ $(function () {
             return
           }
 
-          $('#selected-node').attr('id', null)
+          // リストと連動されたハイライト表示のために選択されたノードにnodeidを与え直す
+          const currentNodeId = $('#list-items-current .text-title').data('nodeid')
+          $('#selected-node').attr('id', 'node-id-' + currentNodeId)
+
           node.select('circle').attr('fill', COLOR.NODE_INIT)
 
           const propCitationCheckBox = $('#highlight-citation-link').prop('checked')
@@ -462,6 +472,29 @@ $(function () {
           showCurrentText(d)
           showCitationText(d)
           showCitedByText(d)
+
+          // 文献リストとグラフノードの連動したハイライト表示用
+          $('.text-title').on('mouseenter', function () {
+            $(this).css({
+              color: '#ff4500'
+            })
+            const focusedNodeId = $(this).data('nodeid')
+            $(`#node-id-${focusedNodeId} circle`).attr({
+              fill: '#ff4500',
+              r: '16'
+            })
+          })
+
+          $('.text-title').on('mouseleave', function () {
+            $(this).css({
+              color: COLOR.WHITE
+            })
+            const focusedNodeId = $(this).data('nodeid')
+            $(`#node-id-${focusedNodeId} circle`).attr({
+              fill: COLOR.NODE_INIT,
+              r: '10'
+            })
+          })
         }
 
         function showCurrentText(d) {
@@ -778,7 +811,7 @@ $(function () {
    */
   function createListItems(node) {
     const textListItem = $('<li></li>')
-      .append($('<div></div>').addClass('text-title').text(node.title))
+      .append($('<div></div>').addClass('text-title').attr('data-nodeid', node.node_id).text(node.title))
       .append($('<div></div>').text(`著者 : ${node.author}`))
       .append($('<div></div>').text(`発行年 : ${node.year}`))
 

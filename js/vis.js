@@ -295,8 +295,8 @@ $(function () {
           )
           .force('charge', d3.forceManyBody().strength(-30))
           .force('center', d3.forceCenter(clientWidth * 0.5, clientHeight * 0.5))
-          .force('collige', d3.forceCollide().radius(60).strength(1).iterations(4))
-          .velocityDecay(0.4)
+          .force('collige', d3.forceCollide().radius(80).strength(1).iterations(6))
+          .velocityDecay(0.3)
           .alphaMin(0.15)
           .on('tick', ticked)
 
@@ -891,21 +891,10 @@ $(function () {
    * @global
    */
   function createDataOptions(metaDataSelection) {
-    $('#data-selection')
-      .append(
-        $('<option>')
-          .attr('value', 'initial_graph')
-          .text(`${metaDataSelection.initial_graph.option_text} (作成者：${metaDataSelection.initial_graph.provider})`)
-      )
-      .append(
-        $('<option>')
-          .attr('value', 'sample_1')
-          .text(`${metaDataSelection.sample_1.option_text} (作成者：${metaDataSelection.sample_1.provider})`)
-      )
-      .append(
-        $('<option>')
-          .attr('value', 'sample_2')
-          .text(`${metaDataSelection.sample_2.option_text} (作成者：${metaDataSelection.sample_2.provider})`)
-      )
+    $('#data-selection').append(
+      $('<option>')
+        .attr('value', 'initial_graph')
+        .text(`${metaDataSelection.initial_graph.option_text} (作成者：${metaDataSelection.initial_graph.provider})`)
+    )
   }
 })

@@ -295,8 +295,8 @@ $(function () {
           )
           .force('charge', d3.forceManyBody().strength(-30))
           .force('center', d3.forceCenter(clientWidth * 0.5, clientHeight * 0.5))
-          .force('collige', d3.forceCollide().radius(60).strength(1).iterations(4))
-          .velocityDecay(0.4)
+          .force('collige', d3.forceCollide().radius(80).strength(1).iterations(6))
+          .velocityDecay(0.3)
           .alphaMin(0.15)
           .on('tick', ticked)
 

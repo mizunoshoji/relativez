@@ -857,7 +857,7 @@ $(function () {
 
 
   function createDataOptions(metaDataSelection) {
-    $('#data-selection').append($('<option>').attr('value', 'initial_graph').text("".concat(metaDataSelection.initial_graph.option_text, " (\u4F5C\u6210\u8005\uFF1A").concat(metaDataSelection.initial_graph.provider, ")"))).append($('<option>').attr('value', 'sample_1').text("".concat(metaDataSelection.sample_1.option_text, " (\u4F5C\u6210\u8005\uFF1A").concat(metaDataSelection.sample_1.provider, ")"))).append($('<option>').attr('value', 'sample_2').text("".concat(metaDataSelection.sample_2.option_text, " (\u4F5C\u6210\u8005\uFF1A").concat(metaDataSelection.sample_2.provider, ")")));
+    $('#data-selection').append($('<option>').attr('value', 'initial_graph').text("".concat(metaDataSelection.initial_graph.option_text, " (\u4F5C\u6210\u8005\uFF1A").concat(metaDataSelection.initial_graph.provider, ")")));
   }
 });
 

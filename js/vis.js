@@ -891,21 +891,10 @@ $(function () {
    * @global
    */
   function createDataOptions(metaDataSelection) {
-    $('#data-selection')
-      .append(
-        $('<option>')
-          .attr('value', 'initial_graph')
-          .text(`${metaDataSelection.initial_graph.option_text} (作成者：${metaDataSelection.initial_graph.provider})`)
-      )
-      .append(
-        $('<option>')
-          .attr('value', 'sample_1')
-          .text(`${metaDataSelection.sample_1.option_text} (作成者：${metaDataSelection.sample_1.provider})`)
-      )
-      .append(
-        $('<option>')
-          .attr('value', 'sample_2')
-          .text(`${metaDataSelection.sample_2.option_text} (作成者：${metaDataSelection.sample_2.provider})`)
-      )
+    $('#data-selection').append(
+      $('<option>')
+        .attr('value', 'initial_graph')
+        .text(`${metaDataSelection.initial_graph.option_text} (作成者：${metaDataSelection.initial_graph.provider})`)
+    )
   }
 })

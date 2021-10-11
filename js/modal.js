@@ -230,6 +230,10 @@ const modal = $(function () {
   $('#header-menu-disclaimer').on('click', function () {
     $('#modal-contents-disclaimer').show()
   })
+
+  $('.filter').on('click', () => {
+    $('.modal-close').trigger('click')
+  })
 })
 
 module.exports = modal

@@ -7,8 +7,9 @@
     "format": "npx prettier index.html ./css/**.css ./js/**js --write",
     "lint": "npx eslint ./js/**.js --fix",
     "fix": "npm run format && npm run lint",
-    "build": "browserify ./js/vis.js -t [ babelify --presets [ @babel/preset-env ] ] -o ./app.js ; npx jsdoc ./js",
-    "jsdoc": "npx jsdoc ./js"
+    "build": "browserify ./js/vis.js -t [ babelify --presets [ @babel/preset-env ] ] -o ./app.js ; npm run minify",
+    "jsdoc": "npx jsdoc ./js",
+    "minify": "npx terser app.js -c -m -o app.js"
   },
   "repository": {
     "type": "git",
@@ -21,7 +22,8 @@
   },
   "homepage": "https://github.com/mizunoshoji/relativez#readme",
   "dependencies": {
-    "jquery": "^3.6.0"
+    "jquery": "^3.6.0",
+    "terser": "^5.9.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.15.7",

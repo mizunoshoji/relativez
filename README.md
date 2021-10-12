@@ -4,7 +4,7 @@ relativezは文献の引用ネットワークを可視化するWebアプリケ�
 
 https://relativez.art/
 
-![Setting](assets/readme_1.png)
+![Setting](assets/readme_1.jpg)
 
 - 企画：大原由
 - 開発：水野翔司

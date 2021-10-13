@@ -22,8 +22,7 @@
   },
   "homepage": "https://github.com/mizunoshoji/relativez#readme",
   "dependencies": {
-    "jquery": "^3.6.0",
-    "terser": "^5.9.0"
+    "jquery": "^3.6.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.15.7",
@@ -39,6 +38,7 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^5.1.0",
     "jsdoc": "^3.6.7",
-    "prettier": "^2.4.1"
+    "prettier": "^2.4.1",
+    "terser": "^5.9.0"
   }
 }

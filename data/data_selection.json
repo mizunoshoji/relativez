@@ -5,5 +5,12 @@
     "links_path": "data/initial_graph_links.csv",
     "date_added": "2021/10/11",
     "provider": "大原由"
+  },
+  "art_expression_and_appreciation": {
+    "option_text": "芸術の制作と鑑賞のプロセスに関する研究",
+    "nodes_path": "data/art_expression_and_appreciation_.v01 - 文献表.csv",
+    "links_path": "data/art_expression_and_appreciation_.v01 - 引用関係表.csv",
+    "date_added": "2021/12/11",
+    "provider": "水野翔司"
   }
 }

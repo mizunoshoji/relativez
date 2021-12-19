@@ -38,7 +38,10 @@ $(function () {
 
   createArrow(svg)
 
-  Promise.all([d3.blob('data/initial_graph_nodes.csv'), d3.blob('data/initial_graph_links.csv')])
+  Promise.all([
+    d3.blob('data/art_expression_and_appreciation_.v01 - 文献表.csv'),
+    d3.blob('data/art_expression_and_appreciation_.v01 - 引用関係表.csv')
+  ])
     .then(function (blob) {
       const nodeObjUrl = URL.createObjectURL(blob[0])
       const linksObjUrl = URL.createObjectURL(blob[1])

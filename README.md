@@ -2,7 +2,7 @@
 
 relativezは文献の引用ネットワークを可視化するWebアプリケーションです。
 
-https://relativez.art/
+[https://relativez.art/](https://mizunoshoji.github.io/relativez/)
 
 ![Setting](assets/readme_1.jpg)
 
